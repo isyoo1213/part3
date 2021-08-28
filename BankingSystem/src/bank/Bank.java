@@ -28,6 +28,7 @@ public class Bank {
             String accNo = scanner.next();
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
 
+            break;
         }
         // 출금처리
         System.out.println("\n출금할 금액을 입력하세요.");
