@@ -6,11 +6,11 @@ import java.math.BigDecimal;
 
 public class Account {
     //TODO: 일반 계좌 클래스의 속성은 계좌종류(N: 예금계좌, S:적금계좌), 계좌번호, 소유자, 잔액, 활성화 여부 5가지 입니다.
-     String category;             // String 계좌 종류
-     String accNo;               // String 계좌번호
-     String owner;               // String 소유자
-     BigDecimal balance;             // BigDecimal 잔액
-     boolean isActive = false;            // boolean 활성화 여부
+     protected String category;             // String 계좌 종류
+     protected String accNo;               // String 계좌번호
+     protected String owner;               // String 소유자
+     protected BigDecimal balance;             // BigDecimal 잔액
+     protected boolean isActive = false;            // boolean 활성화 여부
 
     public Account() {
         //TODO: 일반 계좌의 활성화 여부를 True로, 계좌 종류를 "N"(NORMAL을 의미) 설정해줍니다.
