@@ -75,7 +75,8 @@ public class Account {
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception{
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
-
+        this.balance.subtract(amount);
+        System.out.printf("%s원이 출금되었습니다. 잔액은 %s원입니다.", amount, balance);
         return amount;
     }
     public BigDecimal deposit(BigDecimal amount){
