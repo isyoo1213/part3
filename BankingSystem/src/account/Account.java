@@ -1,7 +1,6 @@
 package account;
 
 import bank.Bank;
-
 import java.math.BigDecimal;
 
 public class Account {
@@ -11,19 +10,18 @@ public class Account {
     private String owner;
     private BigDecimal balance;
     private boolean isActive;
-    //category;             // String 계좌 종류
-    // accNo;               // String 계좌번호
-    // owner;               // String 소유자
-    // balance;             // BigDecimal 잔액
-    // isActive;            // boolean 활성화 여부
 
     public Account() {
-        //TODO: 일반 계좌의 활성화 여부를 True로, 계좌 종류를 "N"(NORMAL을 의미) 설정해줍니다.this.isActive = true;
-
+        //TODO: 일반 계좌의 활성화 여부를 True로, 계좌 종류를 "N"(NORMAL을 의미) 설정해줍니다.
+        this.isActive = true;
+        this.category = "N";
 
     }
     public Account(String accNo, String owner, BigDecimal balance) {
         //TODO
+        this.accNo = accNo;
+        this.owner = owner;
+        this.balance = balance;
     }
 
     // TODO: 일반 계좌 클래스의 각 속성에 getter/setter를 제공합니다.
