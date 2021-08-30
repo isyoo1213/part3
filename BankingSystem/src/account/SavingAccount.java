@@ -27,6 +27,10 @@ public class SavingAccount extends Account{
 
     //TODO: GoalAmount getter 구현
 
+    public BigDecimal getGoalAmount() {
+        return goalAmount;
+    }
+
     //TODO: getAccountInfo를 재정의하여 "목표 금액"도 노출해줍니다.
     public void getAccountInfo(Account account) {
         //TODO
