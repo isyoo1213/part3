@@ -81,6 +81,8 @@ public class Account {
     }
     public BigDecimal deposit(BigDecimal amount){
         //TODO: 입금액을 받아서 입금하는 기본 메소드입니다. this를 이용해 구현해보세요.
+        this.balance.add(amount);
+        System.out.printf("%s원이 입금되었습니다. 잔액은 %s원입니다.", amount, balance);
         return amount;
     }
 }
