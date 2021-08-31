@@ -9,7 +9,7 @@ public class Account {
     protected String category;    //category;             // String 계좌 종류
     protected String accNo;       // accNo;               // String 계좌번호
     protected String owner;       // owner;               // String 소유자
-    protected BigDecimal balance; // balance;             // BigDecimal 잔액
+    protected BigDecimal balance = BigDecimal.valueOf(0); // balance;             // BigDecimal 잔액
     protected boolean isActive;   // isActive;            // boolean 활성화 여부
 
     public Account() {
