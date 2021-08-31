@@ -10,8 +10,34 @@ public class CentralBank {
     //TODO: accountList(Account로 이루어진 ArrayList)
     //TODO: BANK_NAME(은행명)
 
+    private static CentralBank instance = new CentralBank();
+
+    private static ArrayList<Account> accountList = new ArrayList<Account>();
+    private static String BANK_NAME = "인성은행";
+
+    private CentralBank(){
+    }
+
     //TODO: getInstance 함수
 
+    public static CentralBank getInstance(){
+
+        if( instance == null ){
+            instance = new CentralBank();
+        }
+
+        return instance;
+
+    }
+
     //TODO: accountList getter/setter
+
+    public static ArrayList<Account> getAccountList() {
+        return accountList;
+    }
+
+    public void setAccountList(ArrayList<Account> accountList) {
+        this.accountList = accountList;
+    }
 
 }

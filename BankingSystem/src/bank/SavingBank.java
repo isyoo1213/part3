@@ -1,5 +1,6 @@
 package bank;
 
+import account.Account;
 import account.SavingAccount;
 
 import java.math.BigDecimal;
@@ -13,12 +14,28 @@ public class SavingBank extends Bank {
         // throws Exception 적금 계좌는 잔액이 목표 금액(%s원) 이상이어야 출금 가능합니다.
     }
     // TODO: 목표금액을 입력받아서 SavingAccount 객체 생성하도록 재정의
-    @Override
+//    @Override
     public SavingAccount createAccount() throws NoSuchElementException{
-        try{
-            return account;
-        }catch (){
-            //TODO: 오류 throw
-        }
+//        try{
+
+        String newAccNo = String.format("%04d", countAcc);
+        String newOwner = "손님"+countAcc;
+        BigDecimal newBalance = new BigDecimal("0");
+
+
+        SavingAccount account = new SavingAccount(newAccNo, newOwner, newBalance);
+        account.setActive(true);
+        account.setCategory("N");
+
+        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", newOwner);
+        account.getAccountInfo(account); //출력
+
+        ++countAcc;
+
+        return account;
+
+//        }catch (){
+//            //TODO: 오류 throw
+//        }
     }
 }
