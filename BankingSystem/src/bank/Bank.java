@@ -30,7 +30,7 @@ public class Bank {
                     System.out.println("\n출금할 금액을 입력하세요.");
                     if(scanner.hasNextBigDecimal()) {
                         amount = scanner.nextBigDecimal();
-                        if(!(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0)) {
+                        if(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0) {
                             break outer;
                         } else {
                             System.out.println("\n해당금액은 출금할 수 없습니다. 금액과 잔고를 다시 확인하세요.");
@@ -57,7 +57,7 @@ public class Bank {
 
     public void deposit() {
         Account account;
-        BigDecimal money;
+        BigDecimal amount;
         outer: while(true) {
             System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
             String accNo = scanner.next();
@@ -67,8 +67,8 @@ public class Bank {
                 while(true) {
                     System.out.println("\n입금할 금액을 입력하세요.");
                     if(scanner.hasNextBigDecimal()) {
-                        money = scanner.nextBigDecimal();
-                        if(money.compareTo(BigDecimal.ZERO) > 0) {
+                        amount = scanner.nextBigDecimal();
+                        if(amount.compareTo(BigDecimal.ZERO) > 0) {
                             break outer;
                         } else {
                             System.out.println("\n금액은 0이나 마이너스금액을 입금할 수 없습니다.");
@@ -80,7 +80,7 @@ public class Bank {
             }
         }
 
-        BigDecimal balance = account.deposit(money);
+        BigDecimal balance = account.deposit(amount);
         System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
     }
 
