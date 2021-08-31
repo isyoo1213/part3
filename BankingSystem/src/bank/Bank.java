@@ -1,86 +1,171 @@
 package bank;
 
 import account.Account;
-import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Bank {
-    //TODO: Bank 클래스는 출금, 입금, 송금, 계좌 생성, 계좌 검색 기능들을 갖고 있습니다.
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
-    // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
-        //TODO: 출금 메서드 구현
-        //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
-        //여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
+        Map<String, InterestCalculator> calculatorMap = new HashMap<>();
+        calculatorMap.put("N", new BasicInterestCalculator());
+        calculatorMap.put("S", new SavingInterestCalculator());
 
-        // 계좌번호 입력
         Account account;
-        while(true){
+        BigDecimal amount;
+        outer: while(true) {
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
-            // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
-
+            account = findAccount(accNo);
+            if(account != null) {
+                while(true) {
+                    System.out.println("\n출금할 금액을 입력하세요.");
+                    if(scanner.hasNextBigDecimal()) {
+                        amount = scanner.nextBigDecimal();
+                        if(!(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0)) {
+                            break outer;
+                        } else {
+                            System.out.println("\n해당금액은 출금할 수 없습니다. 금액과 잔고를 다시 확인하세요.");
+                        }
+                    } else {
+                        System.out.println("\n잘못된 금액 형식입니다. 다시 입력하세요.");
+                    }
+                }
+            }
         }
-        // 출금처리
-        System.out.println("\n출금할 금액을 입력하세요.");
-        // TODO: interestCalculators 이용하 이자 조회 및 출금
+
+        InterestCalculator calculator = calculatorMap.get(account.getCategory());
+        BigDecimal interest = calculator.getInterest(amount);
+
         try {
-
-        }catch (Exception e){
-
+            BigDecimal balance = account.withdraw(amount);
+            System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
+            System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
+            System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + balance + " 원입니다.");
+        } catch (Exception e) {
+            throw e;
         }
     }
 
-    public void deposit(){
-        //TODO: 입금 메서드 구현
-        // 존재하지 않는 계좌이면 다시 물어보기
-        System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+    public void deposit() {
+        Account account;
+        BigDecimal money;
+        outer: while(true) {
+            System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+            String accNo = scanner.next();
 
-        // TODO: 입금 처리
-        System.out.println("\n입금할 금액을 입력하세요.");
+            account = findAccount(accNo);
+            if(account != null) {
+                while(true) {
+                    System.out.println("\n입금할 금액을 입력하세요.");
+                    if(scanner.hasNextBigDecimal()) {
+                        money = scanner.nextBigDecimal();
+                        if(money.compareTo(BigDecimal.ZERO) > 0) {
+                            break outer;
+                        } else {
+                            System.out.println("\n금액은 0이나 마이너스금액을 입금할 수 없습니다.");
+                        }
+                    } else {
+                        System.out.println("\n잘못된 금액 형식입니다. 다시 입력하세요.");
+                    }
+                }
+            }
+        }
 
+        BigDecimal balance = account.deposit(money);
+        System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
     }
 
-    public Account createAccount() throws InputMismatchException {
-        //TODO: 계좌 생성하는 메서드 구현
+    public Account createAccount(String owner) throws InputMismatchException {
         try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            //TODO
+            Account account = new Account();
+            account.setAccNo("0000" + seq++);
+            account.setBalance(new BigDecimal("0"));
+            account.setOwner(owner);
+
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
-        }catch (){
-            //TODO: 오류 throw
+        } catch (InputMismatchException e){
+            throw e;
         }
     }
 
     public Account findAccount(String accNo){
-        //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
+        CentralBank centralBank = CentralBank.getInstance();
 
-        return account;
+        for(Account account : centralBank.getAccountList()) {
+            if(account.getAccNo().equals(accNo)) {
+                if(account.isActive()) {
+                    return account;
+                } else {
+                    System.out.println("\n해당 계좌는 비활성화 상태입니다.");
+                    return null;
+                }
+            }
+        }
+
+        System.out.println("\n해당 계좌번호는 존재하지 않습니다.");
+        return null;
     }
 
-    public void transfer() throws Exception{
-        //TODO: 송금 메서드 구현
-        // 잘못 입력하거나 예외처리시 다시 입력가능하도록
-        //TODO
-        System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
-        //TODO
-        System.out.println("\n어느 계좌번호로 보내시려나요?");
-        //TODO
-        System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-        //TODO
-        System.out.println("\n적금 계좌로는 송금이 불가합니다.");
-        //TODO
-        System.out.println("\n송금할 금액을 입력하세요.");
-        //TODO
+    public void transfer() throws Exception {
+        while(true) {
+            System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+            String accNo = scanner.next();
+            Account account = findAccount(accNo);
+            if(account == null) {
+                continue;
+            }
+
+            System.out.println("\n어느 계좌번호로 보내시려나요?");
+            String targetAccNo = scanner.next();
+            Account targetAccount = findAccount(targetAccNo);
+            if(targetAccount == null) {
+                continue;
+            }
+
+            if(account.getAccNo().equals(targetAccount.getAccNo())) {
+                System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+                continue;
+            }
+
+            if(account.getCategory().equals("S")) {
+                System.out.println("\n적금 계좌로는 송금이 불가합니다.");
+                continue;
+            }
+
+            BigDecimal amount;
+            while(true) {
+                System.out.println("\n송금할 금액을 입력하세요.");
+                if(scanner.hasNextBigDecimal()) {
+                    amount = scanner.nextBigDecimal();
+                    if(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0) {
+                        break;
+                    } else {
+                        System.out.println("\n해당금액은 출금할 수 없습니다. 금액과 잔고를 다시 확인하세요.");
+                    }
+                } else {
+                    System.out.println("\n잘못된 금액 형식입니다. 다시 입력하세요.");
+                }
+            }
+
+            BigDecimal balance = account.withdraw(amount);
+            System.out.println(df.format(amount)  + " 원을 송금하였습니다.");
+            System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
+            BigDecimal targetBalance = targetAccount.deposit(amount);
+            System.out.println(targetAccount.getOwner() + "님의 " + targetAccount.getAccNo() + "계좌 잔고는 " + df.format(targetBalance) + " 원입니다.");
+            break;
         }
     }
+
+}
