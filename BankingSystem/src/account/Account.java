@@ -24,6 +24,7 @@ public class Account {
     }
     public Account(String accNo, String owner, BigDecimal balance) {
         //TODO
+        this();
         this.accNo = accNo;
         this.owner = owner;
         this.balance = balance;
