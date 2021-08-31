@@ -27,19 +27,24 @@ public class Bank {
         while(true){
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
-
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
             account = findAccount(accNo);
-            if (account.getCategory().equals("S")){
+            if (account == null)
+                System.out.println("찾으시는 계좌가 없습니다.");
+            else if (account.getCategory().equals("S")) {
                 SavingBank savingBank = new SavingBank();
+                savingBank.withdraw((SavingAccount) account);
+                break;
             }
-        }
 
+        }
         // 출금처리
         System.out.println("\n출금할 금액을 입력하세요.");
         BigDecimal withdrawMoney = new BigDecimal(scanner.nextLine());
         // TODO: interestCalculators 이용하 이자 조회 및 출금
         try {
+            InterestCalculator interestCalculator  = interestCalculators.get(account.getCategory());
+            BigDecimal interest = interestCalculator.getInterest(withdrawMoney);
 
         }catch (Exception e){
 
@@ -49,15 +54,26 @@ public class Bank {
     public void deposit(){
         //TODO: 입금 메서드 구현
         // 존재하지 않는 계좌이면 다시 물어보기
-        System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
-
+        Account account;
+        while(true){
+            System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+            String accNo = scanner.nextLine();
+            account = findAccount(accNo);
+            if (account==null)
+                System.out.println("입력하신 계좌번호에 맞는 계좌를 찾지 못했습니다.");
+            else
+                break;
+        }
         // TODO: 입금 처리
         System.out.println("\n입금할 금액을 입력하세요.");
-
+        BigDecimal depositMoney = new BigDecimal(scanner.nextLine());
+        account.deposit(depositMoney);
+        System.out.printf("입금 후 남은 금액 %s원 입니다!\n", account.getBalance().toString());
     }
 
     public Account createAccount() throws InputMismatchException {
         //TODO: 계좌 생성하는 메서드 구현
+        Account account = null;
         try {//유저수가 너무 많을 경우...
             if (seq >=10000){
                 int userCount = CentralBank.getInstance().getAccountList().size();
@@ -67,15 +83,17 @@ public class Bank {
             System.out.println("계좌 소유자 이름을 입력하세요: ");
             String owner = scanner.nextLine();
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            Account account = new Account(df.format(new BigDecimal(seq)), owner, BigDecimal.ZERO);
+            seq++;
+            account = new Account(df.format(new BigDecimal(seq)), owner, BigDecimal.ZERO);
             CentralBank.getInstance().getAccountList().add(account);
             //TODO
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-            return account;
+            System.out.printf("계좌번호는 %s입니다.", account.getAccNo());
         }catch (Exception userLimitException){
             //TODO: 오류 throw
             userLimitException.printStackTrace();
         }
+        return account;
     }
 
     public Account findAccount(String accNo){
