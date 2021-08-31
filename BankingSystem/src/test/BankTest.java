@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BankTest {
-    private static Scanner scanner = new Scanner(System.in);
-    private static Bank bank = new Bank();
-    public static void main(String[] args) throws Exception {
+    private final static Scanner scanner = new Scanner(System.in);
 
-        CentralBank centralBank = CentralBank.getInstance();
+    public static void main(String[] args) throws Exception {
+        final CentralBank centralBank = CentralBank.getInstance();
         // 예금 계좌와 적금 계좌 생성
-        Bank bank1 = new Bank();
-        SavingBank bank2 = new SavingBank();
-        ArrayList<Account> accountList = new ArrayList<>();
+        final Bank bank1 = new Bank();
+        final SavingBank bank2 = new SavingBank();
+        final ArrayList<Account> accountList = new ArrayList<>();
 
         System.out.println("\n1. 예금주의 이름을 입력해주세요.");
         String ownerName = scanner.next();
@@ -31,24 +30,16 @@ public class BankTest {
             System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 종료");
             int menuNo = scanner.nextInt();
             switch (menuNo) {
-                case 1:
+                case 1 -> {
                     int sizeOfBank = centralBank.getAccountList().size();
-                    for (int i=0; i<sizeOfBank; i++) {
+                    for (int i = 0; i < sizeOfBank; i++) {
                         centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
                     }
-                    break;
-                case 2:
-                    bank2.withdraw();
-                    break;
-                case 3:
-                    bank2.deposit();
-                    break;
-                case 4:
-                    bank2.transfer();
-                    break;
-                case 5:
-                    isActive = false;
-                    break;
+                }
+                case 2 -> bank2.withdraw();
+                case 3 -> bank2.deposit();
+                case 4 -> bank2.transfer();
+                case 5 -> isActive = false;
             }
         }
         System.out.println("뱅킹 프로그램을 종료합니다.");
