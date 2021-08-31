@@ -75,4 +75,12 @@ public class Account {
         setBalance(this.balance.add(amount));
         return getBalance();
     }
+
+    public boolean isPossibleWithdraw(BigDecimal amount) {
+        return isValidAmount(amount) && getBalance().compareTo(amount) >= 0;
+    }
+
+    public static boolean isValidAmount(BigDecimal amount) {
+        return amount.compareTo(BigDecimal.ZERO) > 0;
+    }
 }

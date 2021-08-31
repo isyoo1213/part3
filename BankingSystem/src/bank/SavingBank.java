@@ -32,7 +32,7 @@ public class SavingBank extends Bank {
             System.out.println("\n출금할 금액을 입력하세요.");
             if(scanner.hasNextBigDecimal()) {
                 amount = scanner.nextBigDecimal();
-                if(!(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0)) {
+                if(!account.isPossibleWithdraw(amount)) {
                     System.out.println("\n해당금액은 출금할 수 없습니다. 금액과 잔고를 다시 확인하세요.");
                     continue;
                 }

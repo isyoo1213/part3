@@ -9,6 +9,8 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
+import static account.Account.*;
+
 public class Bank {
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
@@ -30,7 +32,7 @@ public class Bank {
                     System.out.println("\n출금할 금액을 입력하세요.");
                     if(scanner.hasNextBigDecimal()) {
                         amount = scanner.nextBigDecimal();
-                        if(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0) {
+                        if(account.isPossibleWithdraw(amount)) {
                             break outer;
                         } else {
                             System.out.println("\n해당금액은 출금할 수 없습니다. 금액과 잔고를 다시 확인하세요.");
@@ -68,7 +70,7 @@ public class Bank {
                     System.out.println("\n입금할 금액을 입력하세요.");
                     if(scanner.hasNextBigDecimal()) {
                         amount = scanner.nextBigDecimal();
-                        if(amount.compareTo(BigDecimal.ZERO) > 0) {
+                        if(isValidAmount(amount)) {
                             break outer;
                         } else {
                             System.out.println("\n금액은 0이나 마이너스금액을 입금할 수 없습니다.");
@@ -149,7 +151,7 @@ public class Bank {
                 System.out.println("\n송금할 금액을 입력하세요.");
                 if(scanner.hasNextBigDecimal()) {
                     amount = scanner.nextBigDecimal();
-                    if(amount.compareTo(BigDecimal.ZERO) > 0 && account.getBalance().compareTo(amount) >= 0) {
+                    if(account.isPossibleWithdraw(amount)) {
                         break;
                     } else {
                         System.out.println("\n해당금액은 출금할 수 없습니다. 금액과 잔고를 다시 확인하세요.");
