@@ -1,5 +1,7 @@
 package account;
 
+import bank.Bank;
+
 import java.math.BigDecimal;
 
 public class Account {
@@ -62,7 +64,7 @@ public class Account {
 
     public void getAccountInfo(Account account) {
         //계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원
-        System.out.printf("\n%s | %s | %s | %s원", category, accNo, owner, balance);
+        System.out.printf("\n%s | %s | %s | %s원", category, accNo, owner, Bank.df.format(balance));
     }
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception {
