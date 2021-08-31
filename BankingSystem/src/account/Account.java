@@ -14,10 +14,14 @@ public class Account {
 
     public Account() {
         //TODO: 일반 계좌의 활성화 여부를 True로, 계좌 종류를 "N"(NORMAL을 의미) 설정해줍니다.
+        category = "N";
+        isActive = true;
     }
 
     public Account(String accNo, String owner, BigDecimal balance) {
-        //TODO
+        this.accNo = accNo;
+        this.owner = owner;
+        this.balance = balance;
     }
 
     // TODO: 일반 계좌 클래스의 각 속성에 getter/setter를 제공합니다.
