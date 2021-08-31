@@ -3,15 +3,26 @@ package bank;
 import account.Account;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CentralBank {
-    //은행시스템의 계좌들을 관리하는 중앙은행 클래스입니다.
-    //TODO: 싱글톤 패턴으로 설계합니다.
-    //TODO: accountList(Account로 이루어진 ArrayList)
-    //TODO: BANK_NAME(은행명)
+    public static final String BANK_NAME = "CENTRAL_BANK";
 
-    //TODO: getInstance 함수
+    private static final CentralBank CENTRAL_BANK = new CentralBank();
 
-    //TODO: accountList getter/setter
+    private CentralBank() {}
 
+    private List<Account> accountList = new ArrayList<>();
+
+    public static CentralBank getInstance() {
+        return CENTRAL_BANK;
+    }
+
+    public List<Account> getAccountList() {
+        return accountList;
+    }
+
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
+    }
 }
