@@ -68,6 +68,7 @@ public class Account {
     public void getAccountInfo(Account account) {
         //TODO: 계좌의 기본 정보를 아래 형태로 출력해줍니다.
         //계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원
+        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원", this.category, this.accNo, this.owner, this.balance);
     }
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception {
