@@ -18,6 +18,63 @@ public class SavingAccount extends Account{
     }
 
     //TODO: GoalAmount getter 구현
+    public BigDecimal getGoalAmount() {
+        return goalAmount;
+    }
+
+    public void setGoalAmount(BigDecimal goalAmount) {
+        this.goalAmount = goalAmount;
+    }
+
+    @Override
+    public String getCategory() {
+        return category;
+    }
+
+    @Override
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @Override
+    public String getAccNo() {
+        return accNo;
+    }
+
+    @Override
+    public void setAccNo(String accNo) {
+        this.accNo = accNo;
+    }
+
+    @Override
+    public String getOwner() {
+        return owner;
+    }
+
+    @Override
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    @Override
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    @Override
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public boolean isActive() {
+        return isActive;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     //TODO: getAccountInfo를 재정의하여 "목표 금액"도 노출해줍니다.
     public void getAccountInfo(Account account) {
