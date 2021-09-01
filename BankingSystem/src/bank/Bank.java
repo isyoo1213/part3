@@ -162,7 +162,7 @@ public class Bank {
                 continue;
             }
 
-            if(account.getAccNo().equals(targetAccount.getAccNo())) {
+            if(account.equals(targetAccount)) {
                 System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
                 continue;
             }

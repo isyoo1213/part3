@@ -3,6 +3,7 @@ package account;
 import bank.Bank;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import static account.Category.*;
 
@@ -89,5 +90,18 @@ public class Account {
 
     public static boolean isValidAmount(BigDecimal amount) {
         return amount.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equals(accNo, account.accNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(accNo);
     }
 }
