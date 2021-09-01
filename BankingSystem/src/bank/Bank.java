@@ -5,6 +5,7 @@ import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -12,10 +13,11 @@ import java.util.Scanner;
 public class Bank {
     //TODO: Bank 클래스는 출금, 입금, 송금, 계좌 생성, 계좌 검색 기능들을 갖고 있습니다.
     protected static Scanner scanner = new Scanner(System.in);
+    //계좌번호 순차적 부여를 위한 static 선언
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
-    // 뱅킹 시스템의 기능들
+    //뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
@@ -49,17 +51,23 @@ public class Bank {
 
     }
 
-    public Account createAccount() throws InputMismatchException {
+    public Account createAccount() {
         //TODO: 계좌 생성하는 메서드 구현
-        try {
-            // 계좌번호 채번
-            // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            //TODO
-            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-            return account;
-        }catch (){
-            //TODO: 오류 throw
-        }
+        // 계좌번호 채번
+        // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
+        //TODO
+        Account account = new Account();
+
+        System.out.print("이름: ");
+        account.setOwner(scanner.next());
+
+        seq += 1;
+        account.setAccNo("0000" + seq);
+
+        String owner = account.getOwner();
+        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+
+        return account;
     }
 
     public Account findAccount(String accNo){
@@ -82,5 +90,6 @@ public class Bank {
         //TODO
         System.out.println("\n송금할 금액을 입력하세요.");
         //TODO
-        }
     }
+
+}
