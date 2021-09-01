@@ -39,18 +39,25 @@ public class BankTest {
                 continue;
             }
 
-            switch (menuNo) {
-                case 1 -> {
-                    int sizeOfBank = centralBank.getAccountList().size();
-                    for (int i = 0; i < sizeOfBank; i++) {
-                        centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+            try {
+                switch (menuNo) {
+                    case 1 -> {
+                        int sizeOfBank = centralBank.getAccountList().size();
+                        for (int i = 0; i < sizeOfBank; i++) {
+                            centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+                        }
                     }
+                    case 2 -> bank2.withdraw();
+                    case 3 -> bank2.deposit();
+                    case 4 -> bank2.transfer();
+                    case 5 -> isActive = false;
+                    default -> System.out.println("\n잘못된 메뉴번호입니다. 다시 입력해주세요.");
                 }
-                case 2 -> bank2.withdraw();
-                case 3 -> bank2.deposit();
-                case 4 -> bank2.transfer();
-                case 5 -> isActive = false;
-                default -> System.out.println("\n잘못된 메뉴번호입니다. 다시 입력해주세요.");
+            } catch(BankException be) {
+                be.printStackTrace();
+            } catch(Exception e) {
+                System.out.println("\n뱅킹시스템 처리 중 오류가 발생했습니다.");
+                e.printStackTrace();
             }
         }
         System.out.println("뱅킹 프로그램을 종료합니다.");

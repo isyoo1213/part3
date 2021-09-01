@@ -2,6 +2,7 @@ package bank;
 
 import account.Account;
 import account.Category;
+import exception.BankException;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -113,7 +114,7 @@ public class Bank {
         }
     }
 
-    public Account findAccount(String accNo){
+    public Account findAccount(String accNo) {
         CentralBank centralBank = CentralBank.getInstance();
 
         for(Account account : centralBank.getAccountList()) {
@@ -121,14 +122,12 @@ public class Bank {
                 if(account.isActive()) {
                     return account;
                 } else {
-                    System.out.println("\n해당 계좌는 비활성화 상태입니다.");
-                    return null;
+                    throw new BankException("해당 계좌는 비활성화 상태입니다.");
                 }
             }
         }
 
-        System.out.println("\n해당 계좌번호는 존재하지 않습니다.");
-        return null;
+        throw new BankException("해당 계좌번호를 찾을 수 없습니다.");
     }
 
     public boolean isExistAccount(String accNo) {
@@ -169,13 +168,11 @@ public class Bank {
             }
 
             if(account.equals(targetAccount)) {
-                System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-                continue;
+                throw new BankException("본인 계좌로의 송금은 입금을 이용해주세요.");
             }
 
             if(account.getCategory() == S) {
-                System.out.println("\n적금 계좌로는 송금이 불가합니다.");
-                continue;
+                throw new BankException("적금 계좌로는 송금이 불가합니다.");
             }
 
             BigDecimal amount;
