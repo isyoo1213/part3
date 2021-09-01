@@ -5,6 +5,7 @@ import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -74,6 +75,22 @@ public class Bank {
 
     public Account findAccount(String accNo){
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
+        CentralBank centralBank = CentralBank.getInstance();
+
+        ArrayList<Account> account_lists = centralBank.getAccountList();
+
+        Account account = null;
+
+        for (int i=0; i<account_lists.size(); i++) {
+            if(account_lists.get(i).getAccNo().equals(accNo)){
+                account = account_lists.get(i);
+                break;
+            }
+        }
+
+        if(account == null){
+            System.out.println("존재하지 않는 계좌번호입니다.");
+        }
 
         return account;
     }
