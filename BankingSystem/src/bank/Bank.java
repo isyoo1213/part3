@@ -201,8 +201,8 @@ public class Bank {
             try {
                 accountFrom.withdraw(transferAmount);
                 accountTo.deposit(transferAmount);
-                System.out.printf("\n%s원을 %s님에게 송금하였습니다.",df.format(transferAmount), accountTo.getOwner());
-                System.out.printf("\n%s님 계좌%s의 잔고: %s",accountFrom.getOwner(),accountFrom.getAccNo(), df.format(accountFrom.getBalance()));
+                System.out.printf("\n%s을 %s님에게 송금하였습니다.",df.format(transferAmount), accountTo.getOwner());
+                System.out.printf("\n%s님의 계좌(%s)의 잔고: %s",accountFrom.getOwner(),accountFrom.getAccNo(), df.format(accountFrom.getBalance()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
