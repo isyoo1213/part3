@@ -26,11 +26,11 @@ public class CentralBank {
 
     //TODO: accountList getter/setter
 
-    public ArrayList<Account> getaccountList(){
+    public ArrayList<Account> getAccountList(){
         return accountList;
     }
 
-    public void setaccountList(ArrayList<Account> accountList){
-        accountList = accountList;
+    public void setAccountList(ArrayList<Account> accountList){
+        this.accountList = accountList;
     }
 }
