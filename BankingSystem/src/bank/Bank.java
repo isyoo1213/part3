@@ -5,9 +5,9 @@ import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Bank {
     //TODO: Bank 클래스는 출금, 입금, 송금, 계좌 생성, 계좌 검색 기능들을 갖고 있습니다.
@@ -28,11 +28,10 @@ public class Bank {
             String accNo = scanner.next();
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
 
-            break;
         }
         // 출금처리
         System.out.println("\n출금할 금액을 입력하세요.");
-        // TODO: interestCalculators 이용하여 이자 조회 및 출금
+        // TODO: interestCalculators 이용하 이자 조회 및 출금
         try {
 
         }catch (Exception e){
@@ -44,40 +43,29 @@ public class Bank {
         //TODO: 입금 메서드 구현
         // 존재하지 않는 계좌이면 다시 물어보기
         System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
-D
+
         // TODO: 입금 처리
         System.out.println("\n입금할 금액을 입력하세요.");
 
     }
 
-    public Account createAccount(String owner) throws InputMismatchException {
+    public Account createAccount() throws InputMismatchException {
         //TODO: 계좌 생성하는 메서드 구현
         try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
             //TODO
-            Account account = new Account("0000".concat(Integer.toString(++seq)),owner,);
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
-        }catch (InputMismatchException e){
+        }catch (){
             //TODO: 오류 throw
-            System.out.println("계좌 생성에 오류가 발생했습니다.");
-            return null;
         }
     }
 
     public Account findAccount(String accNo){
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
-        CentralBank centralBank = CentralBank.getInstance();
-        List<Account> accountList = centralBank.getAccountList();
 
-        for(Account acc : accountList) {
-            if (acc.getAccNo().equals(accNo)) {
-                return acc;
-            }
-        }
-        System.out.println("계좌가 존재하지 않습니다.");
-        return null;
+        return account;
     }
 
     public void transfer() throws Exception{
@@ -85,8 +73,6 @@ D
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
         System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
-            String myAccount = scanner.next();
-
         //TODO
         System.out.println("\n어느 계좌번호로 보내시려나요?");
         //TODO
