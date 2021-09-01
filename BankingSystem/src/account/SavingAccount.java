@@ -1,5 +1,7 @@
 package account;
 
+import bank.Bank;
+
 import java.math.BigDecimal;
 
 import static account.Category.*;
@@ -32,6 +34,6 @@ public class SavingAccount extends Account {
     }
 
     public void getAccountInfo(Account account) {
-        System.out.printf("\n%s | %s | %s | %s원 | %s원", category, accNo, owner, balance, goalAmount);
+        System.out.printf("\n%s | %s | %s | %s원 | %s원", category, accNo, owner, Bank.df.format(balance), Bank.df.format(goalAmount));
     }
 }
