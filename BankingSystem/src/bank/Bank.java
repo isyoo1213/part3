@@ -70,9 +70,19 @@ public class Bank {
         return account;
     }
 
-    public Account findAccount(String accNo){
+    public Account findAccount(String accNo) {
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
+        //TODO: 개선요망 - account 초기화시 null값대신 들어가면 좋을 것
+        Account account = null;
+        CentralBank centralBank = CentralBank.getInstance();
 
+        int sizeOfBank = centralBank.getAccountList().size();
+        for (int i = 0; i < sizeOfBank; i++) {
+            if (accNo.compareTo(centralBank.getAccountList().get(i).getAccNo()) == 0) {
+                account = centralBank.getAccountList().get(i);
+                break;
+            }
+        }
         return account;
     }
 
