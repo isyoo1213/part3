@@ -169,7 +169,7 @@ public class Bank {
     }
 
     String seqNumbering() {
-        return "0000" + seq++;
+        return "0000" + (++seq);
     }
 
 }
