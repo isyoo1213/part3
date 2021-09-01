@@ -55,10 +55,20 @@ public class Bank {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
             //TODO
+            String owner = "박현준";
+            BigDecimal balance = new BigDecimal("0");
+            String account_num = "0000" + seq++;
+
+            Account account = new Account(account_num, owner, balance);
+
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+
             return account;
-        }catch (){
+        }catch (Exception e){
             //TODO: 오류 throw
+            e.printStackTrace();
+
+            throw e;
         }
     }
 
