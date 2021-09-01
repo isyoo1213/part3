@@ -19,6 +19,11 @@ public class Account {
     }
     public Account(String accNo, String owner, BigDecimal balance) {
         //TODO
+        this.isActive = true;
+        this.category = "N";
+        this.accNo = accNo;
+        this.owner = owner;
+        this.balance = balance;
     }
 
     // TODO: 일반 계좌 클래스의 각 속성에 getter/setter를 제공합니다.
