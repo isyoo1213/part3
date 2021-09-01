@@ -14,8 +14,8 @@ public class Account {
 
     public Account() {
         //TODO: 일반 계좌의 활성화 여부를 True로, 계좌 종류를 "N"(NORMAL을 의미) 설정해줍니다.
-        category = "N";
-        isActive = true;
+        this.category = "N";
+        this.isActive = true;
     }
 
     public Account(String accNo, String owner, BigDecimal balance) {
