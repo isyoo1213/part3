@@ -36,6 +36,11 @@ public class Account {
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception{
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
+        if(this.balance.compareTo(amount) > 0){
+            this.balance = this.balance.subtract(amount);
+        }else{
+            System.out.println("잔액이 부족합니다.");
+        }
 
         return amount;
     }
