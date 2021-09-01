@@ -5,6 +5,7 @@ import bank.Bank;
 import bank.CentralBank;
 import bank.SavingBank;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,8 +20,8 @@ public class BankTest {
         SavingBank bank2 = new SavingBank();
         ArrayList<Account> accountList = new ArrayList<>();
 
-        accountList.add(bank1.createAccount());
-        accountList.add(bank2.createAccount());
+        accountList.add(bank1.createAccount("Kim" ));
+        accountList.add(bank2.createAccount("Park"));
         centralBank.setAccountList(accountList);
 
         boolean isActive = true;
