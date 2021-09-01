@@ -1,6 +1,5 @@
 package account;
 
-import bank.Bank;
 
 import java.math.BigDecimal;
 
@@ -11,16 +10,28 @@ public class SavingAccount extends Account{
 
     public SavingAccount(){
         //TODO: 카테고리를 S로 설정해 줍니다.
+        this.setCategory("S");
     }
 
     public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
         // TODO
+        super(accNo, owner, balance);
+        this.goalAmount = goalAmount;
+        this.setCategory("S");
     }
 
     //TODO: GoalAmount getter 구현
+    public void setGoalAmount(BigDecimal goalAmount){
+        this.goalAmount = goalAmount;
+    }
+    public BigDecimal getGoalAmount(){
+        return goalAmount;
+    }
 
     //TODO: getAccountInfo를 재정의하여 "목표 금액"도 노출해줍니다.
     public void getAccountInfo(Account account) {
         //TODO
-    }
+        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표금액: %s원",
+                getCategory(), getAccNo(), getOwner(), getBalance(), goalAmount);
+
 }
