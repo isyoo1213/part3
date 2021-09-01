@@ -33,5 +33,5 @@ public class SavingAccount extends Account{
         //TODO
         System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표금액: %s원",
                 getCategory(), getAccNo(), getOwner(), getBalance(), goalAmount);
-
+    }
 }
