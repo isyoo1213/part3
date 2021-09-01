@@ -10,17 +10,13 @@ public class CentralBank {
     //TODO: 싱글톤 패턴으로 설계합니다.
     //TODO: accountList(Account로 이루어진 ArrayList)
     //TODO: BANK_NAME(은행명)
-    static CentralBank instance;
+    private static final CentralBank instance = new CentralBank();
     private ArrayList<Account> accountList;
     private final String BANK_NAME = "Hyuns bro";
     //TODO: getInstance 함수
 
     private  CentralBank(){}
     public static CentralBank getInstance(){
-        if(instance == null){
-            instance = new CentralBank();
-        }
-
         return instance;
     }
 
