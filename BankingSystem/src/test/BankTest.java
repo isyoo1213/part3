@@ -19,13 +19,14 @@ public class BankTest {
         SavingBank bank2 = new SavingBank();
         ArrayList<Account> accountList = new ArrayList<>();
 
-        accountList.add(bank1.createAccount());
-        accountList.add(bank2.createAccount());
-        centralBank.setAccountList(accountList);
+//        accountList.add(bank1.createAccount());
+//        accountList.add(bank2.createAccount());
+//        accountList.add(bank1.createAccount());
+//        centralBank.setAccountList(accountList);
 
         boolean isActive = true;
         while (isActive) {
-            System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 종료");
+            System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 일반계좌만들기 | 6. 적금계좌만들기 | 7.종료");
             int menuNo = scanner.nextInt();
             switch (menuNo) {
                 case 1:
@@ -44,6 +45,14 @@ public class BankTest {
                     bank2.transfer();
                     break;
                 case 5:
+                    accountList.add(bank1.createAccount());
+                    centralBank.setAccountList(accountList);
+                    break;
+                case 6:
+                    accountList.add(bank2.createAccount());
+                    centralBank.setAccountList(accountList);
+                    break;
+                case 7:
                     isActive = false;
                     break;
             }
