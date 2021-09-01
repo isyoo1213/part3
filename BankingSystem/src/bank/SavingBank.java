@@ -1,14 +1,10 @@
 package bank;
 
 import account.Account;
-import account.Category;
 import account.SavingAccount;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.*;
 
-import static account.Category.N;
 import static account.Category.S;
 
 public class SavingBank extends Bank {

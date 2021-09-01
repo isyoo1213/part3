@@ -7,7 +7,6 @@ import exception.BankException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -15,10 +14,10 @@ import static account.Account.*;
 import static account.Category.*;
 
 public class Bank {
-    protected Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
-    protected static Scanner scanner = new Scanner(System.in);
+    protected final Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
+    protected static final Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
-    public static DecimalFormat df = new DecimalFormat("#,###");
+    public static final DecimalFormat df = new DecimalFormat("#,###");
 
     public Bank() {
         createInterestCalculator();
