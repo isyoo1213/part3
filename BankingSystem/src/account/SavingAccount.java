@@ -17,6 +17,7 @@ public class SavingAccount extends Account{
     public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
         super(accNo, owner, balance);
         this.goalAmount = goalAmount;
+        this.setCategory("S");
     }
 //TODO: GoalAmount getter 구현
     public BigDecimal getGoalAmount() {
@@ -29,8 +30,7 @@ public class SavingAccount extends Account{
 
     //TODO: getAccountInfo를 재정의하여 "목표 금액"도 노출해줍니다.
     @Override
-    public void getAccountInfo(Account account) {
+    public void getAccountInfo() {
         System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 목표금액: %s원 | 잔액: %s원 \n",category,accNo,owner, goalAmount,balance);
-
     }
 }

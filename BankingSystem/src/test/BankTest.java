@@ -32,7 +32,7 @@ public class BankTest {
                 case 1:
                     int sizeOfBank = centralBank.getAccountList().size();
                     for (int i=0; i<sizeOfBank; i++) {
-                        centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+                        centralBank.getAccountList().get(i).getAccountInfo();
                     }
                     break;
                 case 2:

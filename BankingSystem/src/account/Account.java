@@ -67,7 +67,7 @@ public class Account {
         return isActive;
     }
 
-    public void getAccountInfo(Account account){
+    public void getAccountInfo(){
         //TODO: 계좌의 기본 정보를 아래 형태로 출력해줍니다.
         System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 \n",category,accNo,owner,balance);
     }

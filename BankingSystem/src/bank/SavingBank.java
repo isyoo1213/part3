@@ -1,8 +1,6 @@
 package bank;
 
 import account.SavingAccount;
-import exception.SavingAccountException;
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.NoSuchElementException;
