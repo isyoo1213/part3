@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class BankTest {
     private final static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         final CentralBank centralBank = CentralBank.getInstance();
         // 예금 계좌와 적금 계좌 생성
         final Bank bank1 = new Bank();

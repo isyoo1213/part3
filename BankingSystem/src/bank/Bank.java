@@ -29,7 +29,7 @@ public class Bank {
         calculatorMap.put(S, new SavingInterestCalculator());
     }
 
-    public void withdraw() throws Exception {
+    public void withdraw() {
         Account account;
         BigDecimal amount;
         outer: while(true) {
@@ -60,14 +60,10 @@ public class Bank {
         InterestCalculator calculator = calculatorMap.get(account.getCategory());
         BigDecimal interest = calculator.getInterest(amount);
 
-        try {
-            BigDecimal balance = account.withdraw(amount);
-            System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
-            System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
-            System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + balance + " 원입니다.");
-        } catch (Exception e) {
-            throw e;
-        }
+        BigDecimal balance = account.withdraw(amount);
+        System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
+        System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
+        System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + balance + " 원입니다.");
     }
 
     public void deposit() {
@@ -103,15 +99,11 @@ public class Bank {
     }
 
     public Account createAccount(String owner) {
-        try {
-            // 계좌번호 채번
-            // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            Account account = Account.create(seqNumbering(), owner, new BigDecimal("0"));
-            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-            return account;
-        } catch (InputMismatchException e){
-            throw e;
-        }
+        // 계좌번호 채번
+        // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
+        Account account = Account.create(seqNumbering(), owner, new BigDecimal("0"));
+        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+        return account;
     }
 
     public Account findAccount(String accNo) {
@@ -145,7 +137,7 @@ public class Bank {
         return isExist;
     }
 
-    public void transfer() throws Exception {
+    public void transfer() {
         while(true) {
             System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
             String accNo = scanner.next();

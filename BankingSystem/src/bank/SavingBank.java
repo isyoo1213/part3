@@ -14,7 +14,7 @@ import static account.Category.S;
 public class SavingBank extends Bank {
 
     @Override
-    public void withdraw() throws Exception {
+    public void withdraw() {
         // 계좌번호 입력
         Account account;
         while(true){
@@ -61,26 +61,18 @@ public class SavingBank extends Bank {
         InterestCalculator calculator = calculatorMap.get(account.getCategory());
         BigDecimal interest = calculator.getInterest(amount);
 
-        try {
-            BigDecimal balance = account.withdraw(amount);
-            System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
-            System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
-            System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
-        }catch (Exception e){
-            throw e;
-        }
+        BigDecimal balance = account.withdraw(amount);
+        System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
+        System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
+        System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
     }
 
     @Override
-    public SavingAccount createAccount(String owner) throws NoSuchElementException {
-        try {
-            // 계좌번호 채번
-            // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            SavingAccount account = SavingAccount.create(seqNumbering(), owner, new BigDecimal("0"), new BigDecimal("100000"));
-            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-            return account;
-        }catch (InputMismatchException ie){
-            throw ie;
-        }
+    public SavingAccount createAccount(String owner) {
+        // 계좌번호 채번
+        // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
+        SavingAccount account = SavingAccount.create(seqNumbering(), owner, new BigDecimal("0"), new BigDecimal("100000"));
+        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+        return account;
     }
 }

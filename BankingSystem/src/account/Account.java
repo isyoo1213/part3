@@ -75,7 +75,7 @@ public class Account {
         System.out.printf("\n%s | %s | %s | %s원", category, accNo, owner, Bank.df.format(balance));
     }
 
-    public BigDecimal withdraw(BigDecimal amount) throws Exception {
+    public BigDecimal withdraw(BigDecimal amount) {
         setBalance(this.balance.subtract(amount));
         return getBalance();
     }
