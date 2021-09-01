@@ -73,12 +73,15 @@ public class Account {
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception {
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
-        this.balance = this.balance.subtract(amount);
+        if (this.balance.compareTo(amount) >= 0) {
+            this.balance = this.balance.subtract(amount);
+        }
         return amount;
     }
 
     public BigDecimal deposit(BigDecimal amount) {
         //TODO: 입금액을 받아서 입금하는 기본 메소드입니다. this를 이용해 구현해보세요.
+        this.balance = this.balance.add(amount);
         return amount;
     }
 }
