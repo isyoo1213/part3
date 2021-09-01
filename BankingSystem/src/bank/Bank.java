@@ -1,6 +1,7 @@
 package bank;
 
 import account.Account;
+import account.Category;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import static account.Account.*;
+import static account.Category.*;
 
 public class Bank {
     protected static Scanner scanner = new Scanner(System.in);
@@ -17,9 +19,9 @@ public class Bank {
     public static DecimalFormat df = new DecimalFormat("#,###");
 
     public void withdraw() throws Exception {
-        Map<String, InterestCalculator> calculatorMap = new HashMap<>();
-        calculatorMap.put("N", new BasicInterestCalculator());
-        calculatorMap.put("S", new SavingInterestCalculator());
+        Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
+        calculatorMap.put(N, new BasicInterestCalculator());
+        calculatorMap.put(S, new SavingInterestCalculator());
 
         Account account;
         BigDecimal amount;
@@ -90,11 +92,7 @@ public class Bank {
         try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            Account account = new Account();
-            account.setAccNo("0000" + seq++);
-            account.setBalance(new BigDecimal("0"));
-            account.setOwner(owner);
-
+            Account account = Account.create(seqNumbering(), owner, new BigDecimal("0"));
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
         } catch (InputMismatchException e){
@@ -141,7 +139,7 @@ public class Bank {
                 continue;
             }
 
-            if(account.getCategory().equals("S")) {
+            if(account.getCategory() == S) {
                 System.out.println("\n적금 계좌로는 송금이 불가합니다.");
                 continue;
             }
@@ -168,6 +166,10 @@ public class Bank {
             System.out.println(targetAccount.getOwner() + "님의 " + targetAccount.getAccNo() + "계좌 잔고는 " + df.format(targetBalance) + " 원입니다.");
             break;
         }
+    }
+
+    String seqNumbering() {
+        return "0000" + seq++;
     }
 
 }

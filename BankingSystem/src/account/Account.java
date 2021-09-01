@@ -4,29 +4,36 @@ import bank.Bank;
 
 import java.math.BigDecimal;
 
+import static account.Category.*;
+
 public class Account {
-    String category;            // String 계좌 종류
+    Category category;            // String 계좌 종류
     String accNo;               // String 계좌번호
     String owner;               // String 소유자
     BigDecimal balance;         // BigDecimal 잔액
     boolean isActive;           // boolean 활성화 여부
 
-    public Account() {
+    Account() {
         isActive = true;
-        category = "N";
+        category = N;
     }
 
-    public Account(String accNo, String owner, BigDecimal balance) {
+    Account(String accNo, String owner, BigDecimal balance) {
+        this();
         this.accNo = accNo;
         this.owner = owner;
         this.balance = balance;
     }
 
-    public String getCategory() {
+    public static Account create(String accNo, String owner, BigDecimal balance) {
+        return new Account(accNo, owner, balance);
+    }
+
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

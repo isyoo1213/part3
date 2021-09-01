@@ -1,19 +1,23 @@
 package bank;
 
 import account.Account;
+import account.Category;
 import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import static account.Category.N;
+import static account.Category.S;
+
 public class SavingBank extends Bank {
 
     @Override
     public void withdraw() throws Exception {
-        Map<String, InterestCalculator> calculatorMap = new HashMap<>();
-        calculatorMap.put("N", new BasicInterestCalculator());
-        calculatorMap.put("S", new SavingInterestCalculator());
+        Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
+        calculatorMap.put(N, new BasicInterestCalculator());
+        calculatorMap.put(S, new SavingInterestCalculator());
 
         // 계좌번호 입력
         Account account;
@@ -41,7 +45,7 @@ public class SavingBank extends Bank {
                 continue;
             }
 
-            if(account.getCategory().equals("S")) {
+            if(account.getCategory() == S) {
                 SavingAccount savingAccount = (SavingAccount)account;
                 int compareTo = account.getBalance().compareTo(savingAccount.getGoalAmount());
                 if(compareTo >= 0) {
@@ -69,15 +73,11 @@ public class SavingBank extends Bank {
     }
 
     @Override
-    public SavingAccount createAccount(String owner) throws NoSuchElementException{
+    public SavingAccount createAccount(String owner) throws NoSuchElementException {
         try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            SavingAccount account = new SavingAccount();
-            account.setAccNo("0000" + seq++);
-            account.setBalance(new BigDecimal("0"));
-            account.setOwner(owner);
-
+            SavingAccount account = SavingAccount.create(seqNumbering(), owner, new BigDecimal("0"), new BigDecimal("100000"));
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
         }catch (InputMismatchException ie){

@@ -2,18 +2,25 @@ package account;
 
 import java.math.BigDecimal;
 
+import static account.Category.*;
+
 public class SavingAccount extends Account {
     private BigDecimal goalAmount = new BigDecimal(100000);
 
-    public SavingAccount(){
-        super.category = "S";
+    SavingAccount(){
+        super.category = S;
     }
 
-    public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
+    SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
+        this();
         this.accNo = accNo;
         this.owner = owner;
         this.balance = balance;
         this.goalAmount = goalAmount;
+    }
+
+    public static SavingAccount create(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
+        return new SavingAccount(accNo, owner, balance, goalAmount);
     }
 
     public BigDecimal getGoalAmount() {
