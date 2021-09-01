@@ -20,8 +20,8 @@ public class SavingBank extends Bank {
         while(true){
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
-            account = findAccount(accNo);
-            if(account != null) {
+            if(isExistAccount(accNo)) {
+                account = findAccount(accNo);
                 break;
             }
         }

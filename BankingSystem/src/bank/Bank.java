@@ -34,8 +34,9 @@ public class Bank {
         outer: while(true) {
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
-            account = findAccount(accNo);
-            if(account != null) {
+
+            if(isExistAccount(accNo)) {
+                account = findAccount(accNo);
                 while(true) {
                     System.out.println("\n출금할 금액을 입력하세요.");
                     if(scanner.hasNextBigDecimal()) {
@@ -72,8 +73,8 @@ public class Bank {
             System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
             String accNo = scanner.next();
 
-            account = findAccount(accNo);
-            if(account != null) {
+            if(isExistAccount(accNo)) {
+                account = findAccount(accNo);
                 while(true) {
                     System.out.println("\n입금할 금액을 입력하세요.");
                     if(scanner.hasNextBigDecimal()) {
@@ -94,7 +95,7 @@ public class Bank {
         System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
     }
 
-    public Account createAccount(String owner) throws InputMismatchException {
+    public Account createAccount(String owner) {
         try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
@@ -124,19 +125,38 @@ public class Bank {
         return null;
     }
 
+    public boolean isExistAccount(String accNo) {
+        CentralBank centralBank = CentralBank.getInstance();
+
+        boolean isExist = false;
+        for(Account account : centralBank.getAccountList()) {
+            if(account.getAccNo().equals(accNo)) {
+                if(account.isActive()) {
+                    isExist = true;
+                }
+            }
+        }
+
+        return isExist;
+    }
+
     public void transfer() throws Exception {
         while(true) {
             System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
             String accNo = scanner.next();
-            Account account = findAccount(accNo);
-            if(account == null) {
+            Account account;
+            if(isExistAccount(accNo)) {
+                account = findAccount(accNo);
+            } else {
                 continue;
             }
 
             System.out.println("\n어느 계좌번호로 보내시려나요?");
             String targetAccNo = scanner.next();
-            Account targetAccount = findAccount(targetAccNo);
-            if(targetAccount == null) {
+            Account targetAccount;
+            if(isExistAccount(targetAccNo)) {
+                targetAccount = findAccount(targetAccNo);
+            } else {
                 continue;
             }
 
