@@ -15,10 +15,6 @@ public class SavingBank extends Bank {
 
     @Override
     public void withdraw() throws Exception {
-        Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
-        calculatorMap.put(N, new BasicInterestCalculator());
-        calculatorMap.put(S, new SavingInterestCalculator());
-
         // 계좌번호 입력
         Account account;
         while(true){

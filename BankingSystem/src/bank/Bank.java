@@ -14,15 +14,21 @@ import static account.Account.*;
 import static account.Category.*;
 
 public class Bank {
+    protected Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
-    public void withdraw() throws Exception {
-        Map<Category, InterestCalculator> calculatorMap = new HashMap<>();
+    public Bank() {
+        createInterestCalculator();
+    }
+
+    void createInterestCalculator() {
         calculatorMap.put(N, new BasicInterestCalculator());
         calculatorMap.put(S, new SavingInterestCalculator());
+    }
 
+    public void withdraw() throws Exception {
         Account account;
         BigDecimal amount;
         outer: while(true) {
