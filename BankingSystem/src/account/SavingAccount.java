@@ -16,10 +16,18 @@ public class SavingAccount extends Account{
 
     public SavingAccount(){
         //TODO: 카테고리를 S로 설정해 줍니다.
+        this.isActive = true;
+        this.category = "S";
     }
 
     public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
         // TODO
+        this.isActive = true;
+        this.category = "S";
+        this.accNo = accNo;
+        this.owner = owner;
+        this.balance = balance;
+        this.goalAmount = goalAmount;
     }
 
     //TODO: GoalAmount getter 구현
