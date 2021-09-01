@@ -48,6 +48,7 @@ public class Bank {
                         }
                     } else {
                         System.out.println("\n잘못된 금액 형식입니다. 다시 입력하세요.");
+                        scanner.next();
                     }
                 }
             }
@@ -86,6 +87,7 @@ public class Bank {
                         }
                     } else {
                         System.out.println("\n잘못된 금액 형식입니다. 다시 입력하세요.");
+                        scanner.next();
                     }
                 }
             }
@@ -182,6 +184,7 @@ public class Bank {
                     }
                 } else {
                     System.out.println("\n잘못된 금액 형식입니다. 다시 입력하세요.");
+                    scanner.next();
                 }
             }
 

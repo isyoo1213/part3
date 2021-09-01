@@ -38,6 +38,7 @@ public class SavingBank extends Bank {
                 }
             } else {
                 System.out.println("잘못된 금액 형식입니다. 다시 입력하세요.");
+                scanner.next();
                 continue;
             }
 
