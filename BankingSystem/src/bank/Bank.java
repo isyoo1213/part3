@@ -17,7 +17,7 @@ public class Bank {
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
-    //뱅킹 시스템의 기능들
+    뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
@@ -43,12 +43,22 @@ public class Bank {
 
     public void deposit(){
         //TODO: 입금 메서드 구현
-        // 존재하지 않는 계좌이면 다시 물어보기
+
         System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+        String inputAccNo = scanner.next();
 
+        // 존재하지 않는 계좌이면 다시 물어보기
+        Account account = findAccount(inputAccNo);
+        if (account == null) {
+            System.out.println("\n존재하지 않는 계좌입니다. 메뉴로 돌아갑니다");
+        }
         // TODO: 입금 처리
-        System.out.println("\n입금할 금액을 입력하세요.");
-
+        if (account != null) {
+            System.out.println("\n입금하실 금액을 입력하세요.");
+            BigDecimal putMoney = scanner.nextBigDecimal();
+            account.deposit(putMoney);
+            System.out.println("입급이 완료되었습니다. 현재 계좌 잔액은 "+ df.format(account.getBalance()) +"원 입니다.");
+        }
     }
 
     public Account createAccount() {
