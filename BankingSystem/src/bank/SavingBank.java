@@ -23,6 +23,8 @@ public class SavingBank extends Bank {
             if(isExistAccount(accNo)) {
                 account = findAccount(accNo);
                 break;
+            } else {
+                System.out.println("\n입력하신 계좌를 찾을 수 없습니다.");
             }
         }
 

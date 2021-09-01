@@ -51,6 +51,8 @@ public class Bank {
                         scanner.next();
                     }
                 }
+            } else {
+                System.out.println("\n입력하신 계좌를 찾을 수 없습니다.");
             }
         }
 
@@ -90,6 +92,8 @@ public class Bank {
                         scanner.next();
                     }
                 }
+            } else {
+                System.out.println("\n입력하신 계좌를 찾을 수 없습니다.");
             }
         }
 
@@ -150,6 +154,7 @@ public class Bank {
             if(isExistAccount(accNo)) {
                 account = findAccount(accNo);
             } else {
+                System.out.println("\n입력하신 계좌를 찾을 수 없습니다.");
                 continue;
             }
 
@@ -159,6 +164,7 @@ public class Bank {
             if(isExistAccount(targetAccNo)) {
                 targetAccount = findAccount(targetAccNo);
             } else {
+                System.out.println("\n입력하신 계좌를 찾을 수 없습니다.");
                 continue;
             }
 
