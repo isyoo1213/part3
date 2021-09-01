@@ -11,7 +11,7 @@ public class Bank {
     //TODO: Bank 클래스는 출금, 입금, 송금, 계좌 생성, 계좌 검색 기능들을 갖고 있습니다.
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
-    public static DecimalFormat df = new DecimalFormat("#,###");
+    public static DecimalFormat df = new DecimalFormat("0,000");
 
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
@@ -36,16 +36,16 @@ public class Bank {
                 savingBank.withdraw((SavingAccount) account);
                 break;
             }
-
         }
         // 출금처리
-        System.out.println("\n출금할 금액을 입력하세요.");
+        System.out.println("\n일반 예금에서 출금할 금액을 입력하세요.");
         BigDecimal withdrawMoney = new BigDecimal(scanner.nextLine());
         // TODO: interestCalculators 이용하 이자 조회 및 출금
         try {
+            account.withdraw(withdrawMoney);
             InterestCalculator interestCalculator  = interestCalculators.get(account.getCategory());
             BigDecimal interest = interestCalculator.getInterest(withdrawMoney);
-
+            System.out.println();
         }catch (Exception e){
 
         }
@@ -73,11 +73,11 @@ public class Bank {
 
     public Account createAccount() throws InputMismatchException {
         //TODO: 계좌 생성하는 메서드 구현
-        Account account = null;
+        Account account ;
         try {//유저수가 너무 많을 경우...
             if (seq >=10000){
                 int userCount = CentralBank.getInstance().getAccountList().size();
-                Exception userLimitException = new Exception("더 이상 계좌를 생성할 수 없습니다.\n현재 계좌 수 : "+userCount);
+                throw new Exception("더 이상 계좌를 생성할 수 없습니다.\n현재 계좌 수 : "+userCount);
             }
             // 계좌번호 채번
             System.out.println("계좌 소유자 이름을 입력하세요: ");
@@ -88,26 +88,28 @@ public class Bank {
             CentralBank.getInstance().getAccountList().add(account);
             //TODO
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-            System.out.printf("계좌번호는 %s입니다.", account.getAccNo());
+            System.out.printf("계좌번호는 %s입니다.\n", account.getAccNo());
+            return account;
         }catch (Exception userLimitException){
             //TODO: 오류 throw
             userLimitException.printStackTrace();
+            return null;
         }
-        return account;
     }
 
     public Account findAccount(String accNo){
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
         ArrayList<Account> list = CentralBank.getInstance().getAccountList();
-        Iterator<Account> iterator = list.listIterator();
         Account account = null;
-        while(iterator.hasNext()){
-            account = iterator.next();
-            if (account.getAccNo().equals(accNo)) {
+        for(int i = 0 ; i < list.size() ; i++){
+            account = list.get(i);
+            if(account.getAccNo().equals(accNo)){
+                account.getAccountInfo(account);
                 break;
-            } else
-                System.out.println("계좌 번호가 " +accNo+"인 계좌를 찾지 못했습니다.");
+            }
         }
+        if (account == null)
+            System.out.println("계좌 번호가 " +accNo+"인 계좌를 찾지 못했습니다.");
         return account;
     }
 
