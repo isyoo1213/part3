@@ -55,7 +55,7 @@ D
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
             //TODO
-            Account account = new Account("0000".concat(Integer.toString(++seq)),owner,);
+            Account account = new Account("0000".concat(Integer.toString(++seq)),owner,BigDecimal.valueOf(100000));
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
         }catch (InputMismatchException e){
