@@ -4,6 +4,7 @@ import account.Account;
 import bank.Bank;
 import bank.CentralBank;
 import bank.SavingBank;
+import exception.BankException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -28,7 +29,16 @@ public class BankTest {
         boolean isActive = true;
         while (isActive) {
             System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 종료");
-            int menuNo = scanner.nextInt();
+
+            int menuNo;
+            if(scanner.hasNextInt()) {
+                menuNo = scanner.nextInt();
+            } else {
+                System.out.println("값이 올바르지 않습니다. 메뉴번호를 정확히 입력해주세요.");
+                scanner.next();
+                continue;
+            }
+
             switch (menuNo) {
                 case 1 -> {
                     int sizeOfBank = centralBank.getAccountList().size();
@@ -40,6 +50,7 @@ public class BankTest {
                 case 3 -> bank2.deposit();
                 case 4 -> bank2.transfer();
                 case 5 -> isActive = false;
+                default -> System.out.println("\n잘못된 메뉴번호입니다. 다시 입력해주세요.");
             }
         }
         System.out.println("뱅킹 프로그램을 종료합니다.");
