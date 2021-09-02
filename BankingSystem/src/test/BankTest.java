@@ -25,6 +25,7 @@ public class BankTest {
 
         boolean isActive = true;
         while (isActive) {
+            System.out.println("--------------------------");
             System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 종료");
             int menuNo = scanner.nextInt();
             switch (menuNo) {
