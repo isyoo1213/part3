@@ -2,6 +2,7 @@ package bank;
 
 import account.Account;
 import account.Category;
+import account.SavingAccount;
 import exception.BankException;
 
 import java.math.BigDecimal;
@@ -59,10 +60,14 @@ public class Bank {
         InterestCalculator calculator = calculatorMap.get(account.getCategory());
         BigDecimal interest = calculator.getInterest(amount);
 
-        BigDecimal balance = account.withdraw(amount);
-        System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
-        System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
-        System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + balance + " 원입니다.");
+        if(account.getCategory() == S) {
+            ((SavingBank)this).withdraw((SavingAccount)account, amount, interest);
+        } else {
+            BigDecimal balance = account.withdraw(amount);
+            System.out.println(df.format(amount.add(interest)) + " 원을 출금하였습니다.");
+            System.out.println("추가 이자는 " + df.format(interest) + " 입니다.");
+            System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + balance + " 원입니다.");
+        }
     }
 
     public void deposit() {
