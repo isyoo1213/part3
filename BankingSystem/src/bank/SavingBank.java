@@ -40,7 +40,11 @@ public class SavingBank extends Bank {
 
         } catch (InputMismatchException e) {
             //TODO: 오류 throw
-            System.out.println("숫자를 입력해주세요");
+            System.out.println("숫자를 입력해주세요.");
+            account = createAccount();
+            return account;
+        } catch (Exception e){
+            System.out.println("예상치 못한 오류로 계좌생성을 다시 시도합니다.");
             account = createAccount();
             return account;
         }
