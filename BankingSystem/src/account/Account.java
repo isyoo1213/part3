@@ -66,15 +66,9 @@ public class Account {
     			category, accNo, owner, balance);
     }
     
-	public BigDecimal withdraw(BigDecimal amount) throws Exception{
+	public BigDecimal withdraw(BigDecimal amount) {
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
-		
-		// 출금액이 0일 때
-		if (amount.equals(BigDecimal.ZERO)) throw new Exception("출금액을 0으로 입력하시면 안됩니다. 다시 입력해주세요.");
-		
-		// 출금액이 잔액보다 클 때
-		if(this.balance.compareTo(amount) < 0 ) throw new Exception("출금액이 더 큽니다. 다시 입력해주세요.");
-		
+			
 		// 잔액이 출금액보다 더 클 경우 정상 처리
 		if(this.balance.compareTo(amount) >= 0)	
 			setBalance(this.balance.subtract(amount));
@@ -84,12 +78,6 @@ public class Account {
     public BigDecimal deposit(BigDecimal amount) throws Exception{
         //TODO: 입금액을 받아서 입금하는 기본 메소드입니다. this를 이용해 구현해보세요.
     	
-    	// 입금액이 0일 때
-    	if(amount.equals(BigDecimal.ZERO)) throw new Exception("입금액을 0으로 입력하시면 안됩니다. 다시 입력해주세요.");
-    	
-    	// 음수값을 입력 했을 때 
-    	if(amount.compareTo(BigDecimal.ZERO) < 0) throw new Exception("입금액을 다시 입력해주세요."); 
-    		
     	// 정상 처리
     	setBalance(this.balance.add(amount));
     		
