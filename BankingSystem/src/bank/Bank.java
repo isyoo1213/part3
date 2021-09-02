@@ -45,9 +45,29 @@ public class Bank {
         // 존재하지 않는 계좌이면 다시 물어보기
         System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
 
+        String accNo = scanner.next();
+        Account account = findAccount(accNo);
+
+        while(account == null){
+            System.out.println("존재하지 않거나 없는 계좌번호 입니다. 다시 입력 부탁드립니다.");
+            System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+
+            accNo = scanner.next();
+        }
+
         // TODO: 입금 처리
         System.out.println("\n입금할 금액을 입력하세요.");
 
+        String input = scanner.next();
+        BigDecimal amount = new BigDecimal(input);
+
+        if(amount.compareTo(BigDecimal.ZERO) > 0){
+            account.setBalance(account.getBalance().add(amount));
+
+            System.out.printf("입금 완료되었습니다. 계좌 잔액: %s\n", account.getBalance());
+        }else{
+            System.out.println("잘못 입력하셨습니다.");
+        }
     }
 
     public Account createAccount() throws InputMismatchException {
