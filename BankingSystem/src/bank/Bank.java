@@ -177,4 +177,22 @@ public class Bank {
             }
         }
     }
+
+    public void withdraw(Account account) throws Exception{}
+
+    //출금 또는 송금 금액이 음수이거나 계좌 잔액보다 많을 경우를 체크
+    public boolean check_value(int input, Account account){
+        BigDecimal withdraw = new BigDecimal(input);
+        boolean check = false;
+
+        if(input < 0){
+            System.out.println("잘못 입력된 금액입니다.");
+        }else if(account.getBalance().compareTo(withdraw) < 0){
+            System.out.println("계좌 잔액이 부족합니다.");
+        }else{
+            check = true;
+        }
+
+        return check;
+    }
 }
