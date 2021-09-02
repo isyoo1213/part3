@@ -34,7 +34,7 @@ public class SavingBank extends Bank {
                 System.out.print("목표금액을 설정해주세요 : ");
                 goal = scanner.nextInt();
 
-                if(goal < 0){
+                if(goal > 0){
                     System.out.printf("목표금액이 %d원으로 설정되었습니다.", goal);
 
                     break;
