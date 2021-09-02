@@ -92,7 +92,6 @@ public class Bank {
                 return acc;
             }
         }
-        System.out.println("계좌가 존재하지 않습니다.");
         return null;
     }
 
@@ -100,15 +99,39 @@ public class Bank {
         //TODO: 송금 메서드 구현
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
-        System.out.println("\n송금하시려는 계좌번호를 입력해주세요. ");
-        //TODO
-        System.out.println("\n어느 계좌번호로 보내시려나요?");
-        //TODO
-        System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-        //TODO
-        System.out.println("\n적금 계좌로는 송금이 불가합니다.");
-        //TODO
-        System.out.println("\n송금할 금액을 입력하세요.");
-        //TODO
+        try {
+            Account srcAccount; // 송금할 계좌
+            Account destAccount; // 송금받을계좌
+            System.out.println("\n송금하시려는 계좌번호를 입력해주세요. ");
+            //TODO
+            if ( ((srcAccount = findAccount(scanner.next())) == null)) {
+                throw new Exception("송금하려는 계좌가 없습니다.");
+            }
+            System.out.println("\n어느 계좌번호로 보내시려나요?");
+            //TODO
+            if ( ((destAccount = findAccount(scanner.next())) == null)) {
+                throw new Exception("송금 받으려는 계좌가 없습니다.");
+            }
+            if (srcAccount.equals(destAccount)) {
+                System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+                withdraw();
+            }
+            //TODO
+            if (destAccount.getCategory().equals("S")) {
+                System.out.println("\n적금 계좌로는 송금이 불가합니다.");
+                return ;
+            }
+            //TODO
+            System.out.println("\n송금할 금액을 입력하세요.");
+            BigDecimal amount = scanner.nextBigDecimal();
+            if ( srcAccount.withdraw(amount) != null) {
+                destAccount.deposit(amount);
+            }
+
+            //TODO
+        } catch (Exception e) {
+            e.printStackTrace();
+            transfer();
+        }
         }
     }

@@ -76,8 +76,10 @@ public class Account {
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
         if ( this.balance.compareTo(amount) >= 0 && isActive()) {
             this.balance = this.balance.subtract(amount);
+            return amount;
+        } else {
+            return null;
         }
-        return amount;
     }
     public BigDecimal deposit(BigDecimal amount){
         //TODO: 입금액을 받아서 입금하는 기본 메소드입니다. this를 이용해 구현해보세요.
