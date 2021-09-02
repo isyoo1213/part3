@@ -20,7 +20,8 @@ public class Bank {
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###"); // 금액 천단위 표시
     public static DecimalFormat df2 = new DecimalFormat("####0"); // 계좌 표시
-
+    
+    
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
@@ -29,14 +30,20 @@ public class Bank {
     	
         // 계좌번호 입력
         Account account;
-        while(true){ // 계좌 검색
+        first:while(true){ // 계좌 검색
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
             account = findAccount(accNo);
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
+                        
             if(account == null) {
             	System.out.println("없는 계좌번호입니다. 다시 계좌번호 입력창으로 보내드리겠습니다.");
             	continue;
+            }else if(account.getCategory().equals("S")) { // Account가 SavingAccount일때 SavingBank의 withdraw 호출 -> 다운캐스팅
+        		Bank bank = new SavingBank();
+        		SavingBank savingBank = (SavingBank)bank;
+        		savingBank.withdraw((SavingAccount)account);
+        		continue first;
             }
             else {
             	System.out.println("계좌를 찾았습니다.");
@@ -47,11 +54,11 @@ public class Bank {
         while(true) {
         	
         	// 돈이 하나도 없을 때
-        	if(account.getBalance().equals(BigDecimal.ZERO))
-        	{
-        		System.out.println("미리 조회해보니 돈이 하나도 없는 계좌입니다. 종료하겠습니다.");
-        		break;
-        	}
+//        	if(account.getBalance().equals(BigDecimal.ZERO))
+//        	{
+//        		System.out.println("미리 조회해보니 돈이 하나도 없는 계좌입니다. 종료하겠습니다.");
+//        		break;
+//        	}
         	
 	        // 출금처리
 	        System.out.println("\n출금할 금액을 입력하세요.");
@@ -64,6 +71,11 @@ public class Bank {
 	        {
 	        	System.out.println("출금액을 0으로 입력하시면 안됩니다. 다시 입력해주세요.");
 	        	continue;
+	        }
+	        
+	        // 출금액을 음수로 넣었을 때
+	        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+	        	System.out.println("음수를 출금액으로 입력 할 수 없습니다. 출금액을 다시 입력해주세요.");
 	        }
 	        
 	        // 출금액이 잔액보다 클 때
