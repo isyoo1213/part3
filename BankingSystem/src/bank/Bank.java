@@ -4,6 +4,7 @@ import account.Account;
 import account.SavingAccount;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,22 +18,58 @@ public class Bank {
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
-    뱅킹 시스템의 기능들
+    //뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
         //여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
+        HashMap<String, InterestCalculator> hashmap = new HashMap<String, InterestCalculator>();
+        hashmap.put("N", (InterestCalculator) new BasicInterestCalculator());
+        hashmap.put("S", (InterestCalculator) new SavingInterestCalculator());
 
         // 계좌번호 입력
         Account account;
-        while(true){
+        while (true) {
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
-
+            account = findAccount(accNo);
+            if (account == null) {
+                System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+            }
+            if (account != null && account.getCategory().equals("N")) {
+                break;
+            }
+            if (account != null && account.getCategory().equals("S")) {
+                SavingBank savingBank = new SavingBank();
+                savingBank.withdraw((SavingAccount) account);
+                break;
+            }
         }
         // 출금처리
         System.out.println("\n출금할 금액을 입력하세요.");
+        BigDecimal amount = scanner.nextBigDecimal();
+
+        //출금액이 0일 때 에러 발생
+        if (amount.equals(BigDecimal.valueOf(0))) {
+            throw new Exception("출금액을 입력하세요.");
+        }
+        // 출금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
+        if (account.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
+            throw new Exception("출금액을 확인해주세요.");
+        }
+
+        BigDecimal interestRatio = null;
+        if (account.getCategory().equals("N")){
+            interestRatio = hashmap.get("N").getInterest(account.getBalance());
+        }
+        if (account.getCategory().equals("S")){
+            interestRatio = hashmap.get("S").getInterest(account.getBalance());
+        }
+
+        account.withdraw(amount);
+
+        System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING));
         // TODO: interestCalculators 이용하 이자 조회 및 출금
         try {
 
