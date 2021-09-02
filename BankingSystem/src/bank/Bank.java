@@ -152,7 +152,7 @@ public class Bank {
         Account from_acc = null;
         Account to_acc = null;
 
-        while(from_acc == null) {
+        while(true) {
             //TODO
             System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
             String input = scanner.next();
