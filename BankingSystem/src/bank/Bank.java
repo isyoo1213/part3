@@ -21,6 +21,9 @@ public class Bank {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
         //여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
+        HashMap<String, InterestCalculator> Interest = new HashMap<>();
+        Interest.put("N", new BasicInterestCalculator());
+        Interest.put("S", new SavingInterestCalculator());
 
         // 계좌번호 입력
         Account account;
@@ -53,6 +56,10 @@ public class Bank {
                 }
 
                 account.setBalance(account.getBalance().subtract(withdraw));
+                BigDecimal acc_interest = Interest.get(account.getCategory()).getInterest(account.getBalance());
+
+                System.out.printf("현재 계좌(%s)에 남아있는 잔액은 %s원 입니다. 현재 받을 수 있는 이자는 %s원 입니다.\n",
+                        account.getAccNo(), account.getBalance(), acc_interest);
 
                 break;
             }catch (Exception e){
