@@ -131,9 +131,9 @@ public class Bank {
 
         Account account = null;
 
-        for (int i=0; i<account_lists.size(); i++) {
-            if(account_lists.get(i).getAccNo().equals(accNo)){
-                account = account_lists.get(i);
+        for (Account account_list : account_lists) {
+            if (account_list.getAccNo().equals(accNo)) {
+                account = account_list;
                 break;
             }
         }
