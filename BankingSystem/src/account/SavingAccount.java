@@ -29,10 +29,6 @@ public class SavingAccount extends Account {
         return goalAmount;
     }
 
-    public void setGoalAmount(BigDecimal goalAmount) {
-        this.goalAmount = goalAmount;
-    }
-
     public void getAccountInfo(Account account) {
         System.out.printf("\n%s | %s | %s | %s원 | %s원", category, accNo, owner, Bank.df.format(balance), Bank.df.format(goalAmount));
     }
