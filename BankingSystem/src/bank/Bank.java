@@ -54,8 +54,15 @@ public class Bank {
         //TODO: 입금 메서드 구현
         // 존재하지 않는 계좌이면 다시 물어보기
         System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
-        // TODO: 입금 처리
-        System.out.println("\n입금할 금액을 입력하세요.");
+        Account account ;
+        if ( (account = findAccount(scanner.next()))!= null) {
+            // TODO: 입금 처리
+            System.out.println("\n입금할 금액을 입력하세요.");
+            account.deposit(scanner.nextBigDecimal());
+        } else {
+            System.out.println("계좌가 존재 하지 않습니다. 다시 입력해주세요");
+            deposit();
+        }
 
     }
 
@@ -94,7 +101,6 @@ public class Bank {
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
         System.out.println("\n송금하시려는 계좌번호를 입력해주세요. ");
-            String myAccount = scanner.next();
         //TODO
         System.out.println("\n어느 계좌번호로 보내시려나요?");
         //TODO

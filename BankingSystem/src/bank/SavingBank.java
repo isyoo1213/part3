@@ -20,17 +20,14 @@ public class SavingBank extends Bank {
             System.out.println("출금할 금액을 입력하세요");
             BigDecimal amount = scanner.nextBigDecimal();
             account.withdraw(amount);
-            System.out.printf("이자 포함 출금액은: " +  df.format(amount.multiply(interest)) + "입니다");
+            System.out.printf("이자 포함 출금액은: " + df.format(amount.multiply(interest)) + "입니다");
         }
-
-
     }
 
     // TODO: 목표금액을 입력받아서 SavingAccount 객체 생성하도록 재정의
     @Override
     public SavingAccount createAccount(String owner) throws NoSuchElementException{
         try {
-            scanner = new Scanner(System.in);
             System.out.printf( "%s 계좌의 목표 금액을 입력하세요 ", owner );
             BigDecimal goal =  scanner.nextBigDecimal();
             return new SavingAccount("0000".concat(Integer.toString(++seq)), owner, DEFAULT_VALUE, goal);
