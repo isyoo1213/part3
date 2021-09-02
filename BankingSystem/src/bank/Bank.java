@@ -7,10 +7,7 @@ import exception.BankException;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static account.Account.*;
 import static account.Category.*;
@@ -119,7 +116,8 @@ public class Bank {
     public Account findAccount(String accNo) {
         CentralBank centralBank = CentralBank.getInstance();
 
-        for(Account account : centralBank.getAccountList()) {
+        List<Account> accounts = centralBank.getAccountList();
+        for(Account account : accounts) {
             if(account.getAccNo().equals(accNo)) {
                 if(account.isActive()) {
                     return account;
@@ -136,7 +134,8 @@ public class Bank {
         CentralBank centralBank = CentralBank.getInstance();
 
         boolean isExist = false;
-        for(Account account : centralBank.getAccountList()) {
+        List<Account> accounts = centralBank.getAccountList();
+        for(Account account : accounts) {
             if(account.getAccNo().equals(accNo)) {
                 if(account.isActive()) {
                     isExist = true;
