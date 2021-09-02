@@ -20,6 +20,8 @@ public class BasicInterestCalculator implements InterestCalculator {
         } else {
             interest = BigDecimal.valueOf(0.01);
         }
-        return null;
+        //TODO: 왜 null을 리턴하라고 했을까?
+//        return null;
+        return interest;
     }
 }
