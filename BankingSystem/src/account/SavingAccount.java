@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import static account.Category.*;
 
 public class SavingAccount extends Account {
-    private BigDecimal goalAmount = new BigDecimal(100000);
+    private BigDecimal goalAmount;
 
     SavingAccount(){
         super.category = S;

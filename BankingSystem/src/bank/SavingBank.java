@@ -1,8 +1,10 @@
 package bank;
 
+import account.Account;
 import account.SavingAccount;
 
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 
 public class SavingBank extends Bank {
 
@@ -18,12 +20,38 @@ public class SavingBank extends Bank {
     }
 
     @Override
-    public SavingAccount createAccount(String owner) {
-        // 계좌번호 채번
-        // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-        SavingAccount account = SavingAccount.create(seqNumbering(), owner, new BigDecimal("0"), new BigDecimal("100000"));
-        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-        return account;
+    public SavingAccount createAccount() throws NoSuchElementException {
+        try {
+            System.out.println("\n적금계좌를 발급합니다. 이름을 입력해주세요.");
+            String owner = scanner.next();
+
+            System.out.println("\n목표금액을 설정하시겠습니까? 미설정 시 100,000원이 설정됩니다. (Y/N)");
+            String goalAmountSetStatus = scanner.next();
+
+            BigDecimal goalAmount = new BigDecimal("100000");
+            while(goalAmountSetStatus.equals("Y")) {
+                System.out.println("\n목표금액을 입력해주세요.");
+                if(scanner.hasNextBigDecimal()) {
+                    BigDecimal temp = scanner.nextBigDecimal();
+                    if(Account.isValidAmount(temp)) {
+                        goalAmount = temp;
+                    } else {
+                        System.out.println("\n값은 0 혹은 마이너스금액이 입력될 수 없습니다. 다시 입력해주세요.");
+                        continue;
+                    }
+                    break;
+                } else {
+                    System.out.println("\n값이 올바르지 않습니다. 금액을 정확히 입력해주세요.");
+                    scanner.next();
+                }
+            }
+
+            SavingAccount account = SavingAccount.create(seqNumbering(), owner, new BigDecimal("0"), goalAmount);
+            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+            return account;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     private boolean isGoalAmount(SavingAccount account) {

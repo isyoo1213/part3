@@ -19,11 +19,8 @@ public class BankTest {
         final SavingBank bank2 = new SavingBank();
         final ArrayList<Account> accountList = new ArrayList<>();
 
-        System.out.println("\n1. 예금주의 이름을 입력해주세요.");
-        String ownerName = scanner.next();
-
-        accountList.add(bank1.createAccount(ownerName));
-        accountList.add(bank2.createAccount(ownerName));
+        accountList.add(bank1.createAccount());
+        accountList.add(bank2.createAccount());
         centralBank.setAccountList(accountList);
 
         boolean isActive = true;

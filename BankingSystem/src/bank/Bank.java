@@ -8,6 +8,7 @@ import exception.BankException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -102,12 +103,17 @@ public class Bank {
         System.out.println(account.getOwner() + "님의 " + account.getAccNo() + "계좌 잔고는 " + df.format(balance) + " 원입니다.");
     }
 
-    public Account createAccount(String owner) {
-        // 계좌번호 채번
-        // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-        Account account = Account.create(seqNumbering(), owner, new BigDecimal("0"));
-        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-        return account;
+    public Account createAccount() throws InputMismatchException {
+        try {
+            System.out.println("\n예금계좌를 발급합니다. 이름을 입력해주세요.");
+            String owner = scanner.next();
+
+            Account account = Account.create(seqNumbering(), owner, new BigDecimal("0"));
+            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+            return account;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public Account findAccount(String accNo) {
