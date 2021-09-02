@@ -70,7 +70,7 @@ public class Bank {
 
             account.withdraw(amount);
 
-            System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING));
+            System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), df.format(amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING)));
 
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
@@ -105,7 +105,7 @@ public class Bank {
 
             account.deposit(putMoney);
 
-            System.out.println("입급이 완료되었습니다. 현재 계좌 잔액은 " + df.format(account.getBalance()) + "원 입니다.");
+            System.out.printf("입급이 완료되었습니다. 잔액: %s원", df.format(account.getBalance()));
 
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
@@ -205,10 +205,11 @@ public class Bank {
             if (senderAccount.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
                 throw new Exception("송금액을 확인해주세요.");
             }
+
             senderAccount.withdraw(amount);
             receiverAccount.deposit(amount);
 
-            System.out.println("송금이 완료되었습니다. 현재 계좌 잔액은 " + df.format(senderAccount.getBalance()) + "원 입니다.");
+            System.out.printf("%s님께 %s원 송금이 완료되었습니다. 잔액: %s원", receiverAccount.getOwner(), df.format(amount), df.format(senderAccount.getBalance()));
 
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
