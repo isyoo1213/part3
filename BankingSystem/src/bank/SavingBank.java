@@ -25,11 +25,11 @@ public class SavingBank extends Bank {
             System.out.println("\n적금계좌를 발급합니다. 이름을 입력해주세요.");
             String owner = scanner.next();
 
-            System.out.println("\n목표금액을 설정하시겠습니까? 미설정 시 100,000원이 설정됩니다. (Y/N)");
+            System.out.println("\n목표금액을 설정하시겠습니까? 미설정 시 100,000원이 설정됩니다. (설정희망 시 Y를 입력 / 미희망 시 N을 입력)");
             String goalAmountSetStatus = scanner.next();
 
-            BigDecimal goalAmount = new BigDecimal("100000");
-            while(goalAmountSetStatus.equals("Y")) {
+            BigDecimal goalAmount = SavingAccount.INIT_GOAL_AMOUNT;
+            while(goalAmountSetStatus.equalsIgnoreCase("Y")) {
                 System.out.println("\n목표금액을 입력해주세요.");
                 if(scanner.hasNextBigDecimal()) {
                     BigDecimal temp = scanner.nextBigDecimal();
@@ -46,7 +46,7 @@ public class SavingBank extends Bank {
                 }
             }
 
-            SavingAccount account = SavingAccount.create(seqNumbering(), owner, new BigDecimal("0"), goalAmount);
+            SavingAccount account = SavingAccount.create(seqNumbering(), owner, goalAmount);
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
         } catch (Exception e) {

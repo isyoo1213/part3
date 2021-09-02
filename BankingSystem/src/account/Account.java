@@ -26,8 +26,8 @@ public class Account {
         this.balance = balance;
     }
 
-    public static Account create(String accNo, String owner, BigDecimal balance) {
-        return new Account(accNo, owner, balance);
+    public static Account create(String accNo, String owner) {
+        return new Account(accNo, owner, new BigDecimal("0"));
     }
 
     public Category getCategory() {

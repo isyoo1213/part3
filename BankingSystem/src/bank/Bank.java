@@ -105,7 +105,7 @@ public class Bank {
             System.out.println("\n예금계좌를 발급합니다. 이름을 입력해주세요.");
             String owner = scanner.next();
 
-            Account account = Account.create(seqNumbering(), owner, new BigDecimal("0"));
+            Account account = Account.create(seqNumbering(), owner);
             System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
         } catch (Exception e) {

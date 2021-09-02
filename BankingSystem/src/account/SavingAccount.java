@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import static account.Category.*;
 
 public class SavingAccount extends Account {
+    public static final BigDecimal INIT_GOAL_AMOUNT = new BigDecimal("100000");
+
     private BigDecimal goalAmount;
 
     SavingAccount(){
@@ -21,8 +23,8 @@ public class SavingAccount extends Account {
         this.goalAmount = goalAmount;
     }
 
-    public static SavingAccount create(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
-        return new SavingAccount(accNo, owner, balance, goalAmount);
+    public static SavingAccount create(String accNo, String owner, BigDecimal goalAmount) {
+        return new SavingAccount(accNo, owner, new BigDecimal("0"), goalAmount);
     }
 
     public BigDecimal getGoalAmount() {
