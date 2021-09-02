@@ -13,6 +13,6 @@ public class SavingInterestCalculator implements InterestCalculator{
             interest = balance.multiply(new BigDecimal("0.01"));
         }
 
-        return null;
+        return interest;
     }
 }
