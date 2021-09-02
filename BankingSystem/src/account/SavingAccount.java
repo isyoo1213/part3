@@ -16,6 +16,7 @@ public class SavingAccount extends Account{
 
     public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
         // TODO
+        this();
         this.setAccNo(accNo);
         this.setOwner(owner);
         this.setBalance(balance);
@@ -31,6 +32,6 @@ public class SavingAccount extends Account{
     @Override
     public void getAccountInfo(Account account) {
         //TODO
-        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표 금액: %s원\n", getCategory(), getAccNo(), getOwner(), getGoalAmount(), goalAmount);
+        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표 금액: %s원\n", getCategory(), getAccNo(), getOwner(), getBalance(), goalAmount);
     }
 }

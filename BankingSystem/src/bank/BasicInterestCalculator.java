@@ -3,7 +3,8 @@ package bank;
 import java.math.BigDecimal;
 
 // TODO: InterestCalculator 인터페이스 구현한 BasicInterestCalculator 클래스
-public class BasicInterestCalculator{
+public class BasicInterestCalculator implements InterestCalculator{
+    @Override
     public BigDecimal getInterest(BigDecimal balance) {
         BigDecimal interest;
         // TODO:
@@ -15,6 +16,8 @@ public class BasicInterestCalculator{
             interest = new BigDecimal(("0.07"));
         else if (balance.compareTo(new BigDecimal("1000000")) >= 0)
             interest = new BigDecimal("0.04");
+        else if (balance.compareTo(new BigDecimal("10000")) >= 0)
+            interest = new BigDecimal("0.02");
         else
             interest = new BigDecimal("0.01");
         return interest;
