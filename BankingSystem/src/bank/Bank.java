@@ -118,16 +118,61 @@ public class Bank {
     public void transfer() throws Exception{
         //TODO: 송금 메서드 구현
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
+
+        Account from_acc = null;
+        Account to_acc = null;
+
+        while(from_acc == null) {
+            //TODO
+            System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+            String input = scanner.next();
+            from_acc = findAccount(input);
+
+            if(from_acc != null){
+                break;
+            }
+
+            System.out.println("존재하지 않은 계좌이거나 잘못 입력하셨습니다. 다시 입력 부탁드리겠습니다.");
+        }
+
+        while(true) {
+            //TODO
+            System.out.println("\n어느 계좌번호로 보내시려나요?");
+            String input = scanner.next();
+            to_acc = findAccount(input);
+
+            if(to_acc == null){
+                System.out.println("존재하지 않은 계좌이거나 잘못 입력하셨습니다. 다시 입력 부탁드리겠습니다.");
+            }else if(from_acc == to_acc){
+                System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+            }else if(to_acc.getCategory().equals("S")){
+                System.out.println("\n적금 계좌로는 송금이 불가합니다.");
+            }else{
+                break;
+            }
+        }
         //TODO
-        System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
-        //TODO
-        System.out.println("\n어느 계좌번호로 보내시려나요?");
-        //TODO
-        System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-        //TODO
-        System.out.println("\n적금 계좌로는 송금이 불가합니다.");
-        //TODO
-        System.out.println("\n송금할 금액을 입력하세요.");
-        //TODO
+
+        while(true) {
+            try{
+                System.out.printf("\n송금할 금액을 입력하세요. 계좌 잔액: %s\n",from_acc.getBalance());
+                int input = scanner.nextInt();
+                BigDecimal transfer = new BigDecimal(input);
+
+                if(input < 0){
+                    System.out.println("해당 금액은 송금할 수 없는 금액입니다.");
+                    continue;
+                }else if(from_acc.getBalance().compareTo(transfer) < 0){
+                    System.out.println("계좌 잔액이 부족합니다.");
+                    continue;
+                }
+
+                from_acc.setBalance(from_acc.getBalance().subtract(transfer));
+                to_acc.setBalance(to_acc.getBalance().add(transfer));
+
+                break;
+            }catch (Exception e){
+                System.out.println("송금 금액을 잘못 입력하셨습니다.");
+            }
         }
     }
