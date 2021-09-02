@@ -48,7 +48,7 @@ public class Bank {
                 int input = scanner.nextInt();
                 BigDecimal withdraw = new BigDecimal(input);
 
-                if(check_value(input, account)){
+                if(!check_value(input, account)){
                     continue;
                 }
 
@@ -181,11 +181,7 @@ public class Bank {
                 int input = scanner.nextInt();
                 BigDecimal transfer = new BigDecimal(input);
 
-                if(input < 0){
-                    System.out.println("해당 금액은 송금할 수 없는 금액입니다.");
-                    continue;
-                }else if(from_acc.getBalance().compareTo(transfer) < 0){
-                    System.out.println("계좌 잔액이 부족합니다.");
+                if(!check_value(input, from_acc)){
                     continue;
                 }
 
@@ -194,7 +190,7 @@ public class Bank {
 
                 break;
             }catch (Exception e){
-                System.out.println("송금 금액을 잘못 입력하셨습니다.");
+                System.out.println("금액을 잘못 입력하셨습니다.");
                 scanner.nextLine();
             }
         }
