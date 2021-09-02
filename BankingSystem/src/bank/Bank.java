@@ -82,6 +82,7 @@ public class Bank {
             System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
 
             accNo = scanner.next();
+            account = findAccount(accNo);
         }
 
         // TODO: 입금 처리
