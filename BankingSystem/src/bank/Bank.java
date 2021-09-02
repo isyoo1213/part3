@@ -28,15 +28,37 @@ public class Bank {
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
+            account = findAccount(accNo);
 
+            if(account == null){
+                System.out.println("없는 계좌 번호 입니다. 다시 입력 부탁드리겠습니다.");
+            }else if(account.getCategory().equals("S")){
+                withdraw(account);
+
+                break;
+            }else{
+                break;
+            }
         }
         // 출금처리
-        System.out.println("\n출금할 금액을 입력하세요.");
-        // TODO: interestCalculators 이용하 이자 조회 및 출금
-        try {
+        // TODO: interestCalculators 이용한 이자 조회 및 출금
+        while(true) {
+            try{
+                System.out.printf("\n출금할 금액을 입력하세요. 계좌 잔액: %s\n",account.getBalance());
+                int input = scanner.nextInt();
+                BigDecimal withdraw = new BigDecimal(input);
 
-        }catch (Exception e){
+                if(check_value(input, account)){
+                    continue;
+                }
 
+                account.setBalance(account.getBalance().subtract(withdraw));
+
+                break;
+            }catch (Exception e){
+                System.out.println("금액을 잘못 입력하셨습니다.");
+                scanner.nextLine();
+            }
         }
     }
 
