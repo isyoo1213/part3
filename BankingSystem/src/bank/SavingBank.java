@@ -28,9 +28,20 @@ public class SavingBank extends Bank {
             String owner = "박현준";
             BigDecimal balance = new BigDecimal("0");
             String account_num = "0000" + seq++;
+            int goal = -1;
 
-            System.out.print("목표금액을 설정해주세요 : ");
-            int goal = scanner.nextInt();
+            while(goal < 0){
+                System.out.print("목표금액을 설정해주세요 : ");
+                goal = scanner.nextInt();
+
+                if(goal < 0){
+                    System.out.printf("목표금액이 %d원으로 설정되었습니다.", goal);
+
+                    break;
+                }
+
+                System.out.println("목표금액은 음수가 될 수 없습니다. 다시 입력 부탁드리겠습니다.");
+            }
 
             BigDecimal goalAmount = new BigDecimal(goal);
 
