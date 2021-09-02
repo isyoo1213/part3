@@ -71,11 +71,11 @@ public class Bank {
 
         System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING));
         // TODO: interestCalculators 이용하 이자 조회 및 출금
-        try {
-
-        }catch (Exception e){
-
-        }
+//        try {
+//
+//        }catch (Exception e){
+//
+//        }
     }
 
     public void deposit(){
@@ -119,7 +119,6 @@ public class Bank {
 
     public Account findAccount(String accNo) {
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
-        //TODO: 개선요망 - account 초기화시 null값대신 들어가면 좋을 것
         Account account = null;
         CentralBank centralBank = CentralBank.getInstance();
 
@@ -137,15 +136,49 @@ public class Bank {
         //TODO: 송금 메서드 구현
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
+        Account senderAccount;
+        Account receiverAccount;
+
         System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+        String senderAccNo = scanner.next();
+        senderAccount = findAccount(senderAccNo);
+        if (senderAccount == null) {
+            System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+            return;
+        }
         //TODO
         System.out.println("\n어느 계좌번호로 보내시려나요?");
+        String receiverAccNo = scanner.next();
+        receiverAccount = findAccount(receiverAccNo);
+        if (receiverAccount == null) {
+            System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+            return;
+        }
         //TODO
-        System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+        if (senderAccNo.equals(receiverAccount.getAccNo())) {
+            System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+            return;
+        }
         //TODO
-        System.out.println("\n적금 계좌로는 송금이 불가합니다.");
+        if (receiverAccount.getCategory().equals("S")) {
+            System.out.println("\n적금 계좌로는 송금이 불가합니다.");
+            return;
+        }
         //TODO
         System.out.println("\n송금할 금액을 입력하세요.");
+        BigDecimal amount = scanner.nextBigDecimal();
+        // 송금액이 0일 때 에러 발생
+        if (amount.equals(BigDecimal.valueOf(0))) {
+            System.out.println("송금액을 입력하세요.");
+        }
+        // 송금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
+        if (senderAccount.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
+            System.out.println("송금액을 확인해주세요.");
+        }
+        senderAccount.withdraw(amount);
+        receiverAccount.deposit(amount);
+
+        System.out.println("송금이 완료되었습니다. 현재 계좌 잔액은 "+ df.format(senderAccount.getBalance()) +"원 입니다.");
         //TODO
     }
 
