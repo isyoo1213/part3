@@ -16,7 +16,7 @@ public class SavingBank extends Bank {
 
         // 잔액이 목표금액 미만일시 에러발생
         if (account.getBalance().compareTo(account.getGoalAmount()) < 0) {
-            throw new Exception("적금 계좌는 잔액이 목표 금액(" + df.format(account.getGoalAmount()) + "원) 이상이어야 출금 가능합니다.");
+            throw new Exception("적금 계좌는 잔액이 목표 금액(" + df.format(account.getGoalAmount()) + "원) 이상이어야 출금이 가능합니다.");
         }
     }
 

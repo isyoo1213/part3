@@ -29,73 +29,94 @@ public class Bank {
 
         // 계좌번호 입력
         Account account;
-        while (true) {
-            System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
-            String accNo = scanner.next();
-            // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
-            account = findAccount(accNo);
-            if (account == null) {
-                System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+        try {
+            while (true) {
+                System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
+                String accNo = scanner.next();
+                // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
+                account = findAccount(accNo);
+                if (account == null) {
+                    System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+                }
+                if (account != null && account.getCategory().equals("N")) {
+                    break;
+                }
+                if (account != null && account.getCategory().equals("S")) {
+                    SavingBank savingBank = new SavingBank();
+                    savingBank.withdraw((SavingAccount) account);
+                    break;
+                }
             }
-            if (account != null && account.getCategory().equals("N")) {
-                break;
+            // 출금처리
+            System.out.println("\n출금할 금액을 입력하세요.");
+            BigDecimal amount = scanner.nextBigDecimal();
+
+            //출금액이 0일 때 에러 발생
+            if (amount.equals(BigDecimal.valueOf(0))) {
+                throw new Exception("출금액을 입력하세요.");
             }
-            if (account != null && account.getCategory().equals("S")) {
-                SavingBank savingBank = new SavingBank();
-                savingBank.withdraw((SavingAccount) account);
-                break;
+            // 출금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
+            if (account.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
+                throw new Exception("출금액을 확인해주세요.");
             }
-        }
-        // 출금처리
-        System.out.println("\n출금할 금액을 입력하세요.");
-        BigDecimal amount = scanner.nextBigDecimal();
+            // TODO: interestCalculators 이용하여 이자 조회 및 출금
+            BigDecimal interestRatio = null;
+            if (account.getCategory().equals("N")) {
+                interestRatio = hashmap.get("N").getInterest(account.getBalance());
+            }
+            if (account.getCategory().equals("S")) {
+                interestRatio = hashmap.get("S").getInterest(account.getBalance());
+            }
 
-        //출금액이 0일 때 에러 발생
-        if (amount.equals(BigDecimal.valueOf(0))) {
-            throw new Exception("출금액을 입력하세요.");
-        }
-        // 출금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
-        if (account.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
-            throw new Exception("출금액을 확인해주세요.");
-        }
+            account.withdraw(amount);
 
-        BigDecimal interestRatio = null;
-        if (account.getCategory().equals("N")){
-            interestRatio = hashmap.get("N").getInterest(account.getBalance());
-        }
-        if (account.getCategory().equals("S")){
-            interestRatio = hashmap.get("S").getInterest(account.getBalance());
-        }
+            System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING));
 
-        account.withdraw(amount);
-
-        System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING));
-        // TODO: interestCalculators 이용하 이자 조회 및 출금
-//        try {
-//
-//        }catch (Exception e){
-//
-//        }
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 입력해주세요.");
+            scanner.nextLine();
+            withdraw();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("예상치 못한 오류로 출금을 다시 시도합니다.");
+            withdraw();
+        }
     }
 
-    public void deposit(){
+    public void deposit() {
         //TODO: 입금 메서드 구현
-
-        System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
-        String inputAccNo = scanner.next();
-
-        // 존재하지 않는 계좌이면 다시 물어보기
-        Account account = findAccount(inputAccNo);
-        if (account == null) {
-            System.out.println("\n존재하지 않는 계좌입니다. 메뉴로 돌아갑니다");
-        }
-        // TODO: 입금 처리
-        if (account != null) {
+        Account account;
+        try {
+            while (true) {
+                System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+                String inputAccNo = scanner.next();
+                // 존재하지 않는 계좌이면 다시 물어보기
+                account = findAccount(inputAccNo);
+                if (account == null) {
+                    System.out.println("\n존재하지 않는 계좌입니다.");
+                }
+                if (account != null) {
+                    break;
+                }
+            }
+            // TODO: 입금 처리
             System.out.println("\n입금하실 금액을 입력하세요.");
             BigDecimal putMoney = scanner.nextBigDecimal();
+
             account.deposit(putMoney);
-            System.out.println("입급이 완료되었습니다. 현재 계좌 잔액은 "+ df.format(account.getBalance()) +"원 입니다.");
+
+            System.out.println("입급이 완료되었습니다. 현재 계좌 잔액은 " + df.format(account.getBalance()) + "원 입니다.");
+
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 입력해주세요.");
+            scanner.nextLine();
+            deposit();
+        } catch (Exception e) {
+            System.out.println("예상치 못한 오류로 입금을 다시 시도합니다.");
+            scanner.nextLine();
+            deposit();
         }
+
     }
 
     public Account createAccount() {
@@ -132,54 +153,73 @@ public class Bank {
         return account;
     }
 
-    public void transfer() throws Exception{
+    public void transfer() throws Exception {
         //TODO: 송금 메서드 구현
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
         Account senderAccount;
         Account receiverAccount;
+        try {
+            while (true) {
+                System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+                String senderAccNo = scanner.next();
+                senderAccount = findAccount(senderAccNo);
+                if (senderAccount == null) {
+                    throw new Exception("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+                }
+                if (senderAccount != null) {
+                    break;
+                }
+            }
+            //TODO
+            while (true) {
+                System.out.println("\n어느 계좌번호로 보내시려나요?");
+                String receiverAccNo = scanner.next();
+                receiverAccount = findAccount(receiverAccNo);
+                if (receiverAccount == null) {
+                    throw new Exception("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
+                }
+                if (receiverAccount != null) {
+                    break;
+                }
+            }
+            //TODO
+            if (senderAccount.getAccNo().equals(receiverAccount.getAccNo())) {
+                throw new Exception("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+            }
+            //TODO
+            if (receiverAccount.getCategory().equals("S")) {
+                throw new Exception("\n적금 계좌로는 송금이 불가합니다.");
+            }
+            SavingBank savingBank = new SavingBank();
+            savingBank.withdraw((SavingAccount) senderAccount);
+            //TODO
+            System.out.println("\n송금할 금액을 입력하세요.");
+            BigDecimal amount = scanner.nextBigDecimal();
 
-        System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
-        String senderAccNo = scanner.next();
-        senderAccount = findAccount(senderAccNo);
-        if (senderAccount == null) {
-            System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
-            return;
-        }
-        //TODO
-        System.out.println("\n어느 계좌번호로 보내시려나요?");
-        String receiverAccNo = scanner.next();
-        receiverAccount = findAccount(receiverAccNo);
-        if (receiverAccount == null) {
-            System.out.println("\n존재하지 않는 계좌입니다. 다시 입력해주세요");
-            return;
-        }
-        //TODO
-        if (senderAccNo.equals(receiverAccount.getAccNo())) {
-            System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-            return;
-        }
-        //TODO
-        if (receiverAccount.getCategory().equals("S")) {
-            System.out.println("\n적금 계좌로는 송금이 불가합니다.");
-            return;
-        }
-        //TODO
-        System.out.println("\n송금할 금액을 입력하세요.");
-        BigDecimal amount = scanner.nextBigDecimal();
-        // 송금액이 0일 때 에러 발생
-        if (amount.equals(BigDecimal.valueOf(0))) {
-            System.out.println("송금액을 입력하세요.");
-        }
-        // 송금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
-        if (senderAccount.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
-            System.out.println("송금액을 확인해주세요.");
-        }
-        senderAccount.withdraw(amount);
-        receiverAccount.deposit(amount);
+            // 송금액이 0일 때 에러 발생
+            if (amount.equals(BigDecimal.valueOf(0))) {
+                throw new Exception("송금액을 입력하세요.");
+            }
+            // 송금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
+            if (senderAccount.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
+                throw new Exception("송금액을 확인해주세요.");
+            }
+            senderAccount.withdraw(amount);
+            receiverAccount.deposit(amount);
 
-        System.out.println("송금이 완료되었습니다. 현재 계좌 잔액은 "+ df.format(senderAccount.getBalance()) +"원 입니다.");
-        //TODO
+            System.out.println("송금이 완료되었습니다. 현재 계좌 잔액은 " + df.format(senderAccount.getBalance()) + "원 입니다.");
+
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 입력해주세요.");
+            scanner.nextLine();
+            transfer();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("예상치 못한 오류로 입금을 다시 시도합니다.");
+            scanner.nextLine();
+            transfer();
+        }
     }
 
 }
