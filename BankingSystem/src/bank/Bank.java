@@ -15,16 +15,15 @@ public class Bank {
     protected static int seq = 0;
     protected final BigDecimal DEFAULT_VALUE = BigDecimal.valueOf(100000);
     public static DecimalFormat df = new DecimalFormat("#,###");
+    protected HashMap<String,InterestCalculator> interestCalculators = new HashMap<>();
 
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
         //TODO: 여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
-        HashMap<String,InterestCalculator> interestCalculators = new HashMap<>();
         interestCalculators.put("N",new BasicInterestCalculator());
         interestCalculators.put("S",new SavingInterestCalculator());
-
         // 계좌번호 입력
         Account account;
         while(true){
@@ -33,9 +32,9 @@ public class Bank {
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
             account = findAccount(accNo);
             if (account.getCategory().equals("S")) {
-
+                ((SavingBank)this).withdraw((SavingAccount)account);
+                return ;
             }
-
             break;
         }
         // 출금처리
@@ -94,7 +93,7 @@ public class Bank {
         //TODO: 송금 메서드 구현
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
-        System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
+        System.out.println("\n송금하시려는 계좌번호를 입력해주세요. ");
             String myAccount = scanner.next();
         //TODO
         System.out.println("\n어느 계좌번호로 보내시려나요?");
