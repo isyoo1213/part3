@@ -173,6 +173,8 @@ public class Bank {
                 break;
             }catch (Exception e){
                 System.out.println("송금 금액을 잘못 입력하셨습니다.");
+                scanner.nextLine();
             }
         }
     }
+}
