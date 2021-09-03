@@ -68,7 +68,7 @@ public class Bank {
             System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), df.format(account.getBalance().multiply(interestRatio).setScale(0, RoundingMode.CEILING)));
 
         } catch (InputMismatchException e) {
-            System.out.println("숫자를 입력해주세요.");
+            System.out.println("숫자를 입력해주세요. 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class Bank {
             System.out.printf("입급이 완료되었습니다. 잔액: %s원", df.format(account.getBalance()));
 
         } catch (InputMismatchException e) {
-            System.out.println("숫자를 입력해주세요.");
+            System.out.println("숫자를 입력해주세요. 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         } catch (Exception e) {
@@ -201,7 +201,7 @@ public class Bank {
             System.out.printf("%s님께 %s원 송금이 완료되었습니다. 잔액: %s원", receiverAccount.getOwner(), df.format(amount), df.format(senderAccount.getBalance()));
 
         } catch (InputMismatchException e) {
-            System.out.println("숫자를 입력해주세요.");
+            System.out.println("숫자를 입력해주세요. 메뉴로 돌아갑니다.");
             scanner.nextLine();
             return;
         } catch (Exception e) {
