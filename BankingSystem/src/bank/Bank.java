@@ -144,7 +144,7 @@ public class Bank {
         BigDecimal amount = scanner.nextBigDecimal();
         BigDecimal isMyAccountWithdraw = myAccount.withdraw(amount);
         if (isMyAccountWithdraw != null) {
-            toAccount.setBalance(toAccount.getBalance().add(amount));
+            toAccount.deposit(amount);
             System.out.printf("송금 받은 계좌의 잔액 : %s", toAccount.getBalance());
         }
     }
