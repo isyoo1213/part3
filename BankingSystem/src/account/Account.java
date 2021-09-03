@@ -8,11 +8,11 @@ import java.util.Objects;
 import static account.Category.*;
 
 public class Account {
-    Category category;            // String 계좌 종류
-    String accNo;               // String 계좌번호
-    String owner;               // String 소유자
-    BigDecimal balance;         // BigDecimal 잔액
-    boolean isActive;           // boolean 활성화 여부
+    Category category;
+    String accNo;
+    String owner;
+    BigDecimal balance;
+    boolean isActive;
 
     Account() {
         isActive = true;

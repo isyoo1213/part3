@@ -14,7 +14,6 @@ public class BankTest {
 
     public static void main(String[] args) {
         final CentralBank centralBank = CentralBank.getInstance();
-        // 예금 계좌와 적금 계좌 생성
         final Bank bank1 = new Bank();
         final SavingBank bank2 = new SavingBank();
         final ArrayList<Account> accountList = new ArrayList<>();
