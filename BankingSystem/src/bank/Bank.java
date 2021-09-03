@@ -79,6 +79,7 @@ public class Bank {
         } catch (Exception e){
             System.out.println(e.getMessage());
             System.out.println("예상치 못한 오류로 출금을 다시 시도합니다.");
+            scanner.nextLine();
             withdraw();
         }
     }
@@ -101,9 +102,17 @@ public class Bank {
             }
             // TODO: 입금 처리
             System.out.println("\n입금하실 금액을 입력하세요.");
-            BigDecimal putMoney = scanner.nextBigDecimal();
+            BigDecimal amount = scanner.nextBigDecimal();
 
-            account.deposit(putMoney);
+            // 입금액이 0일 때 에러 발생
+            if (amount.equals(BigDecimal.valueOf(0))) {
+                throw new Exception("입금액을 입력하세요.");
+            }
+            // 입금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
+            if (amount.compareTo(BigDecimal.valueOf(0)) < 0) {
+                throw new Exception("입금액을 확인해주세요.");
+            }
+            account.deposit(amount);
 
             System.out.printf("입급이 완료되었습니다. 잔액: %s원", df.format(account.getBalance()));
 
@@ -112,6 +121,7 @@ public class Bank {
             scanner.nextLine();
             deposit();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.out.println("예상치 못한 오류로 입금을 다시 시도합니다.");
             scanner.nextLine();
             deposit();
