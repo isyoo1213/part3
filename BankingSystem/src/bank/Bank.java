@@ -141,5 +141,11 @@ public class Bank {
         //TODO
         System.out.println("\n송금할 금액을 입력하세요.");
         //TODO
+        BigDecimal amount = scanner.nextBigDecimal();
+        BigDecimal isMyAccountWithdraw = myAccount.withdraw(amount);
+        if (isMyAccountWithdraw != null) {
+            toAccount.setBalance(toAccount.getBalance().add(amount));
+            System.out.printf("송금 받은 계좌의 잔액 : %s", toAccount.getBalance());
+        }
     }
 }
