@@ -36,9 +36,9 @@ public class Bank {
             if(account == null){
                 System.out.println("없는 계좌 번호 입니다. 다시 입력 부탁드리겠습니다.");
             }else if(account.getCategory().equals("S")){
-                withdraw(account);
+                withdraw((SavingAccount) account);
 
-                break;
+                return;
             }else{
                 break;
             }
@@ -204,7 +204,7 @@ public class Bank {
         }
     }
 
-    public void withdraw(Account account) throws Exception{}
+    public void withdraw(SavingAccount account) throws Exception{}
 
     //출금 또는 송금 금액이 음수이거나 계좌 잔액보다 많을 경우를 체크
     public boolean check_value(int input, Account account){
