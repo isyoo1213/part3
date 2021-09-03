@@ -12,7 +12,7 @@ public class SavingBank extends Bank {
         // TODO: Account의 출금 메서드에서 잔액/목표 금액 체크하여 조금 다르게 구현
         // throws Exception 적금 계좌는 잔액이 목표 금액(%s원) 이상이어야 출금 가능합니다.
         try{
-            if(account.getGoalAmount().compareTo(account.getBalance()) < 0){
+            if(account.getGoalAmount().compareTo(account.getBalance()) > 0){
                 throw new Exception();
             }
         }catch (Exception e){
