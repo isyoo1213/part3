@@ -21,7 +21,7 @@ public class BankTest {
         ArrayList<Account> accountList = new ArrayList<>();
 
         accountList.add(bank1.createAccount());
-//        accountList.add(bank2.createAccount());
+        accountList.add(bank2.createAccount());
         centralBank.setAccountList(accountList);
 
         boolean isActive = true;
