@@ -47,18 +47,13 @@ public class Bank {
                     break;
                 }
             }
+            // 잔액이 0원일때 에러
+            noBalance(account);
+
             // 출금처리
             System.out.println("\n출금할 금액을 입력하세요.");
             BigDecimal amount = scanner.nextBigDecimal();
 
-            //출금액이 0일 때 에러 발생
-            if (amount.equals(BigDecimal.valueOf(0))) {
-                throw new Exception("출금액을 입력하세요.");
-            }
-            // 출금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
-            if (account.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
-                throw new Exception("출금액을 확인해주세요.");
-            }
             // TODO: interestCalculators 이용하여 이자 조회 및 출금
             BigDecimal interestRatio = null;
             if (account.getCategory().equals("N")) {
@@ -68,9 +63,9 @@ public class Bank {
                 interestRatio = hashmap.get("S").getInterest(account.getBalance());
             }
 
-            account.withdraw(amount);
+            account.withdraw(amount, "출금");
 
-            System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), df.format(amount.multiply(interestRatio).setScale(0, RoundingMode.CEILING)));
+            System.out.printf("%s원이 출금되었습니다. 잔액: %s원 | 이자: %s원", df.format(amount), df.format(account.getBalance()), df.format(account.getBalance().multiply(interestRatio).setScale(0, RoundingMode.CEILING)));
 
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
@@ -91,7 +86,6 @@ public class Bank {
             while (true) {
                 System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
                 String inputAccNo = scanner.next();
-                // 존재하지 않는 계좌이면 다시 물어보기
                 account = findAccount(inputAccNo);
                 if (account == null) {
                     System.out.println("\n존재하지 않는 계좌입니다.");
@@ -104,14 +98,6 @@ public class Bank {
             System.out.println("\n입금하실 금액을 입력하세요.");
             BigDecimal amount = scanner.nextBigDecimal();
 
-            // 입금액이 0일 때 에러 발생
-            if (amount.equals(BigDecimal.valueOf(0))) {
-                throw new Exception("입금액을 입력하세요.");
-            }
-            // 입금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
-            if (amount.compareTo(BigDecimal.valueOf(0)) < 0) {
-                throw new Exception("입금액을 확인해주세요.");
-            }
             account.deposit(amount);
 
             System.out.printf("입급이 완료되었습니다. 잔액: %s원", df.format(account.getBalance()));
@@ -142,8 +128,7 @@ public class Bank {
         seq += 1;
         account.setAccNo("0000" + seq);
 
-        String owner = account.getOwner();
-        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
+        System.out.printf("\n%s님 계좌가 발급되었습니다.\n", account.getOwner());
 
         return account;
     }
@@ -201,22 +186,16 @@ public class Bank {
             if (receiverAccount.getCategory().equals("S")) {
                 throw new Exception("\n적금 계좌로는 송금이 불가합니다.");
             }
+            // 잔액이 목표금액 미만일시 에러발생
             SavingBank savingBank = new SavingBank();
             savingBank.withdraw((SavingAccount) senderAccount);
+            // 잔액이 0원일때 에러
+            noBalance(senderAccount);
             //TODO
             System.out.println("\n송금할 금액을 입력하세요.");
             BigDecimal amount = scanner.nextBigDecimal();
 
-            // 송금액이 0일 때 에러 발생
-            if (amount.equals(BigDecimal.valueOf(0))) {
-                throw new Exception("송금액을 입력하세요.");
-            }
-            // 송금액이 잔액보다 크거나, 0보다 작을 때 에러 발생
-            if (senderAccount.getBalance().compareTo(amount) < 0 || amount.compareTo(BigDecimal.valueOf(0)) < 0) {
-                throw new Exception("송금액을 확인해주세요.");
-            }
-
-            senderAccount.withdraw(amount);
+            senderAccount.withdraw(amount, "송금");
             receiverAccount.deposit(amount);
 
             System.out.printf("%s님께 %s원 송금이 완료되었습니다. 잔액: %s원", receiverAccount.getOwner(), df.format(amount), df.format(senderAccount.getBalance()));
@@ -232,5 +211,10 @@ public class Bank {
             transfer();
         }
     }
-
+    public void noBalance(Account account){
+        if (account.getBalance().equals(BigDecimal.ZERO)){
+            System.out.println("계좌내 잔액이 없습니다. 메뉴로 돌아갑니다.");
+            return;
+        }
+    }
 }
