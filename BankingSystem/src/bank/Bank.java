@@ -10,10 +10,6 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
-
-
-
 public class Bank {
     //TODO: Bank 클래스는 출금, 입금, 송금, 계좌 생성, 계좌 검색 기능들을 갖고 있습니다.
     protected static Scanner scanner = new Scanner(System.in);
@@ -27,6 +23,9 @@ public class Bank {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
         //여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
+    	HashMap<String, InterestCalculator> interest = new HashMap<>();
+    	interest.put("N", new BasicInterestCalculator());
+    	interest.put("S", new SavingInterestCalculator());
     	
         // 계좌번호 입력
         Account account;
@@ -39,11 +38,16 @@ public class Bank {
             if(account == null) {
             	System.out.println("없는 계좌번호입니다. 다시 계좌번호 입력창으로 보내드리겠습니다.");
             	continue;
-            }else if(account.getCategory().equals("S")) { // Account가 SavingAccount일때 SavingBank의 withdraw 호출 -> 다운캐스팅
+            }else if(account.getCategory().equals("S")) { // Account가 적금일 때
         		Bank bank = new SavingBank();
         		SavingBank savingBank = (SavingBank)bank;
-        		savingBank.withdraw((SavingAccount)account);
-        		continue first;
+        		if(savingBank.withdraw((SavingAccount)account)==null) {
+        			continue first;            	
+        		}
+        		else {
+        			System.out.println("계좌를 찾았습니다.");
+        			break;
+        		}
             }
             else {
             	System.out.println("계좌를 찾았습니다.");
@@ -54,11 +58,11 @@ public class Bank {
         while(true) {
         	
         	// 돈이 하나도 없을 때
-//        	if(account.getBalance().equals(BigDecimal.ZERO))
-//        	{
-//        		System.out.println("미리 조회해보니 돈이 하나도 없는 계좌입니다. 종료하겠습니다.");
-//        		break;
-//        	}
+        	if(account.getBalance().equals(BigDecimal.ZERO))
+        	{
+        		System.out.println("미리 조회해보니 돈이 하나도 없는 계좌입니다. 종료하겠습니다.");
+        		break;
+        	}
         	
 	        // 출금처리
 	        System.out.println("\n출금할 금액을 입력하세요.");
@@ -83,13 +87,15 @@ public class Bank {
 			{
 				System.out.println("출금액이 잔액보다 더 큽니다. 다시 입력해주세요.");
 				continue;
-			}			
+			}
+			
+			BigDecimal acc_interest = interest.get(account.getCategory()).getInterest(account.getBalance());
 			
 	        try {
 	        	System.out.println("출금 진행하겠습니다.");
 	        	account.withdraw(amount);
-	        	System.out.printf("%s계좌에 남아있는 잔액은 %s원 입니다."
-	        			, account.getAccNo(), account.getBalance());
+	        	System.out.printf("%s계좌에 남아있는 잔액은 %s원 입니다. 현재 이자는 %s원입니다.\n"
+	        			, account.getAccNo(), account.getBalance(), acc_interest);
 	        	break;
 	        }catch (Exception e){
 	        	System.out.println("출금 실패하였습니다. 다시 처음부터 진행하겠습니다.");
@@ -242,10 +248,35 @@ public class Bank {
         }
 	        
         //TODO
-        System.out.println("\n송금할 금액을 입력하세요.");
-        BigDecimal amount = scanner.nextBigDecimal();
-        senderAccount.withdraw(amount);
-        receiverAccount.deposit(amount);
+        while(true) {
+	        System.out.println("\n송금할 금액을 입력하세요.");
+	        BigDecimal amount = scanner.nextBigDecimal();
+	        // 송금금액에 대한 예외처리
+	        if(amount.equals(BigDecimal.ZERO)) {
+	        	System.out.println("송금액을 0원 입력하시면 섭섭해 합니다");
+	        	continue;
+	        }
+	        
+	        if(amount.compareTo(BigDecimal.ZERO)<0) {
+	        	System.out.println("음수를 송금액으로 입력 할 수 없습니다. 송금액을 다시 입력해주세요.");
+	        	continue;
+	        }
+	        
+	        if(senderAccount.getBalance().compareTo(amount) < 0) {
+	        	System.out.println("송금액이 잔액보다 더 큽니다. 다시 입력해주세요.");
+	        	continue;
+	        }
+	        
+	        senderAccount.withdraw(amount);
+	        System.out.printf("송금하는 계좌인 %s계좌에 남아있는 잔액은 %s원 입니다.\n"
+					, senderAccount.getAccNo(), senderAccount.getBalance());
+	        receiverAccount.deposit(amount);
+	        System.out.printf("송금받는 계좌인 %s계좌에 남아있는 잔액은 %s원 입니다.\n"
+	        		, receiverAccount.getAccNo(), receiverAccount.getBalance());
+	        
+	        System.out.println("송금을 종료합니다");
+	        return;
+	    }
         //TODO
     }
   }
