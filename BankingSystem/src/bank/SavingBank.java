@@ -16,7 +16,7 @@ public class SavingBank extends Bank {
                 throw new Exception();
             }
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
 
             System.out.printf("적금 계좌는 잔액이 목표 금액(%s원) 이상이어야 출금 가능합니다.", account.getGoalAmount());
         }
