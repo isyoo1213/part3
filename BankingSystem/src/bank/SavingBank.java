@@ -31,6 +31,15 @@ public class SavingBank extends Bank {
             System.out.print("목표금액: ");
             account.setGoalAmount(scanner.nextBigDecimal());
 
+            // 목표금액이 0일 때 에러 발생
+            if (account.getGoalAmount().equals(BigDecimal.valueOf(0))) {
+                throw new Exception("입금액을 입력하세요.");
+            }
+            // 목표금액이 0보다 작을 때 에러 발생
+            if (account.getGoalAmount().compareTo(BigDecimal.valueOf(0)) < 0) {
+                throw new Exception("입금액을 확인해주세요.");
+            }
+
             seq += 1;
             account.setAccNo("0000" + seq);
 
@@ -40,12 +49,13 @@ public class SavingBank extends Bank {
 
         } catch (InputMismatchException e) {
             //TODO: 오류 throw
-            System.out.println("숫자를 입력해주세요.");
+            System.out.println("숫자를 입력해주세요. 계좌생성을 다시 시도합니다.");
             scanner.nextLine();
             account = createAccount();
             return account;
         } catch (Exception e){
-            System.out.println("예상치 못한 오류로 계좌생성을 다시 시도합니다.");
+            System.out.println(e.getMessage());
+            System.out.println("오류로 계좌생성을 다시 시도합니다.");
             scanner.nextLine();
             account = createAccount();
             return account;
