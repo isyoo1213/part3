@@ -19,6 +19,7 @@ public class Account {
     }
 
     public Account(String accNo, String owner, BigDecimal balance) {
+        this();
         this.accNo = accNo;
         this.owner = owner;
         this.balance = balance;
@@ -68,13 +69,17 @@ public class Account {
     public void getAccountInfo(Account account) {
         //TODO: 계좌의 기본 정보를 아래 형태로 출력해줍니다.
         //계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원
-        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원", this.category, this.accNo, this.owner, this.balance);
+        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원\n", this.category, this.accNo, this.owner, this.balance);
     }
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception {
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
         if (this.balance.compareTo(amount) >= 0) {
             this.balance = this.balance.subtract(amount);
+        } else {
+            System.out.println("잔액이 부족합니다.");
+            // null을 받을 시 Bank.java에서 출금 후 잔액 표시 X
+            return null;
         }
         return amount;
     }
