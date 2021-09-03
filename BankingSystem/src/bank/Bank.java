@@ -70,12 +70,12 @@ public class Bank {
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
             scanner.nextLine();
-            withdraw();
-        } catch (Exception e){
+            return;
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("예상치 못한 오류로 출금을 다시 시도합니다.");
+            System.out.println("오류가 발생했습니다. 메뉴로 돌아갑니다.");
             scanner.nextLine();
-            withdraw();
+            return;
         }
     }
 
@@ -105,12 +105,12 @@ public class Bank {
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
             scanner.nextLine();
-            deposit();
+            return;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("예상치 못한 오류로 입금을 다시 시도합니다.");
+            System.out.println("오류가 발생했습니다. 메뉴로 돌아갑니다.");
             scanner.nextLine();
-            deposit();
+            return;
         }
 
     }
@@ -203,18 +203,18 @@ public class Bank {
         } catch (InputMismatchException e) {
             System.out.println("숫자를 입력해주세요.");
             scanner.nextLine();
-            transfer();
+            return;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("예상치 못한 오류로 입금을 다시 시도합니다.");
+            System.out.println("오류가 발생했습니다. 메뉴로 돌아갑니다.");
             scanner.nextLine();
-            transfer();
+            return;
         }
     }
-    public void noBalance(Account account){
-        if (account.getBalance().equals(BigDecimal.ZERO)){
-            System.out.println("계좌내 잔액이 없습니다. 메뉴로 돌아갑니다.");
-            return;
+
+    public void noBalance(Account account) throws Exception{
+        if (account.getBalance().equals(BigDecimal.ZERO)) {
+            throw new Exception("계좌내 잔액이 없습니다.");
         }
     }
 }
