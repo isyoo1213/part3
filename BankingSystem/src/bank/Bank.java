@@ -14,9 +14,7 @@ public class Bank {
     //TODO: Bank 클래스는 출금, 입금, 송금, 계좌 생성, 계좌 검색 기능들을 갖고 있습니다.
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
-    public static DecimalFormat df = new DecimalFormat("#,###"); // 금액 천단위 표시
-    public static DecimalFormat df2 = new DecimalFormat("####0"); // 계좌 표시
-    
+    public static DecimalFormat df = new DecimalFormat("#,###");
     
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
@@ -29,7 +27,7 @@ public class Bank {
     	
         // 계좌번호 입력
         Account account;
-        first:while(true){ // 계좌 검색
+        while(true){ // 계좌 검색
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
             account = findAccount(accNo);
@@ -41,8 +39,8 @@ public class Bank {
             }else if(account.getCategory().equals("S")) { // Account가 적금일 때
         		Bank bank = new SavingBank();
         		SavingBank savingBank = (SavingBank)bank;
-        		if(savingBank.withdraw((SavingAccount)account)==null) {
-        			continue first;            	
+        		if(savingBank.withdraw((SavingAccount)account)==null) { // 적금계좌조회시 규정에 어긋나면 계좌 입력창으로 보내기
+        			return;            	
         		}
         		else {
         			System.out.println("계좌를 찾았습니다.");
@@ -58,7 +56,7 @@ public class Bank {
         while(true) {
         	
         	// 돈이 하나도 없을 때
-        	if(account.getBalance().equals(BigDecimal.ZERO))
+        	if(account.getBalance().signum() == 0)
         	{
         		System.out.println("미리 조회해보니 돈이 하나도 없는 계좌입니다. 종료하겠습니다.");
         		break;
@@ -71,14 +69,20 @@ public class Bank {
 	        
 	        
 	        // 출금액이 0일 때
-	        if (amount.equals(BigDecimal.ZERO)) 
+	        if (amount.signum() == 0) 
 	        {
 	        	System.out.println("출금액을 0으로 입력하시면 안됩니다. 다시 입력해주세요.");
 	        	continue;
 	        }
 	        
+	        // 소수를 입력 했을 때
+	    	if(amount.scale() > 0) {
+	    		System.out.println("소수를 입금액으로 입력 할 수 없습니다. 입금액을 다시 입력해주세요.");
+	    		continue;
+	    	}
+	        
 	        // 출금액을 음수로 넣었을 때
-	        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+	        if (amount.signum() < 0) {
 	        	System.out.println("음수를 출금액으로 입력 할 수 없습니다. 출금액을 다시 입력해주세요.");
 	        }
 	        
@@ -89,13 +93,14 @@ public class Bank {
 				continue;
 			}
 			
+			// 이자
 			BigDecimal acc_interest = interest.get(account.getCategory()).getInterest(account.getBalance());
 			
 	        try {
 	        	System.out.println("출금 진행하겠습니다.");
 	        	account.withdraw(amount);
-	        	System.out.printf("%s계좌에 남아있는 잔액은 %s원 입니다. 현재 이자는 %s원입니다.\n"
-	        			, account.getAccNo(), account.getBalance(), acc_interest);
+	        	System.out.printf("%s계좌에 남아있는 잔액은 %s원 입니다. 현재 이자는 %s입니다.\n"
+	        			, account.getAccNo(), df.format(account.getBalance()), df.format(acc_interest.multiply(account.getBalance())));
 	        	break;
 	        }catch (Exception e){
 	        	System.out.println("출금 실패하였습니다. 다시 처음부터 진행하겠습니다.");
@@ -108,6 +113,7 @@ public class Bank {
         //TODO: 입금 메서드 구현
         // 존재하지 않는 계좌이면 다시 물어보기
     	Account account;
+    	
     	while(true) { // 계좌 검색
 	        System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
 	        String depositacNo = scanner.next();
@@ -122,27 +128,34 @@ public class Bank {
             	break;
 	        }
     	}
+    	
 	    while(true) {    
 	        // TODO: 입금 처리
 	        System.out.println("\n입금할 금액을 입력하세요.");
 	        BigDecimal amount = scanner.nextBigDecimal();
 	        
 	        // 입금액이 0일 때
-	    	if(amount.equals(BigDecimal.ZERO)) { 
+	    	if(amount.signum() == 0) { 
 	    		System.out.println("입금액을 0으로 입력하시면 섭섭합니다. 다시 입력해주세요.");
 	    		continue;
 	    	}
 	    	
-	    	// 음수값을 입력 했을 때 
-	    	if(amount.compareTo(BigDecimal.ZERO) < 0) {
+	    	// 입금액을 음수값을 입력 했을 때 
+	    	if(amount.signum() < 0) {
 	    		System.out.println("음수를 입금액으로 입력 할 수 없습니다. 입금액을 다시 입력해주세요.");
+	    		continue;
+	    	}
+	    	
+	    	// 입금액을 소수를 입력 했을 때
+	    	if(amount.scale() > 0) {
+	    		System.out.println("소수를 입금액으로 입력 할 수 없습니다. 입금액을 다시 입력해주세요.");
 	    		continue;
 	    	}
 	    	
 	        try {
 				account.deposit(amount);
 				System.out.printf("%s계좌에 남아있는 잔액은 %s원 입니다."
-						, account.getAccNo(), account.getBalance());
+						, account.getAccNo(), df.format(account.getBalance()));
 				break;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -158,7 +171,6 @@ public class Bank {
 	        try {
 	            // 계좌번호 채번
 	            // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다. seq는 1부터 시작
-	        	//Account account = new Account(String.valueOf(df2.format(++seq)), owner, BigDecimal.ZERO);
 	        	Account account = new Account(String.valueOf(("0000")+(++seq)), owner, BigDecimal.ZERO);
 	            //TODO
 	            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", account.getOwner());
@@ -201,14 +213,14 @@ public class Bank {
         // 잘못 입력하거나 예외처리시 다시 입력가능하도록
         //TODO
     	Account senderAccount;
-    	String senderaccNo;
+    	String senderAccNo;
     	Account receiverAccount;
-    	String receiver;
+    	String receiverAccNo;
     	
     	sender:while(true) { // 보내는 계좌 찾기
 	    	System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
-		    senderaccNo = scanner.next(); 
-	    	senderAccount = findAccount(senderaccNo);
+	    	senderAccNo = scanner.next(); 
+	    	senderAccount = findAccount(senderAccNo);
 	    	
 	    	if(senderAccount == null) {
 	    		System.out.println("이용하시려는 계좌를 찾을 수 없으니 다시 입력란으로 보내겠습니다.");
@@ -219,12 +231,19 @@ public class Bank {
 	    		break;
 	    	}
     	}
+    	
+    	// 돈이 하나도 없을 때
+    	if(senderAccount.getBalance().signum() == 0)
+    	{
+    		System.out.println("미리 조회해보니 돈이 하나도 없는 계좌입니다. 종료하겠습니다.");
+    		return;
+    	}
 	    	
 	    receive:while(true) { // 받는 계좌 찾기
 	        //TODO
 	        System.out.println("\n어느 계좌번호로 보내십니까?");
-	        receiver = scanner.next();
-	        receiverAccount = findAccount(receiver);
+	        receiverAccNo = scanner.next();
+	        receiverAccount = findAccount(receiverAccNo);
 	        if(receiverAccount == null) {
 	    		System.out.println("송금 받는 계좌를 찾을 수 없으니 다시 입력란으로 보내겠습니다.");
 	    		continue receive;
@@ -251,17 +270,26 @@ public class Bank {
         while(true) {
 	        System.out.println("\n송금할 금액을 입력하세요.");
 	        BigDecimal amount = scanner.nextBigDecimal();
-	        // 송금금액에 대한 예외처리
-	        if(amount.equals(BigDecimal.ZERO)) {
+	        
+	        // 송금액을 0 입력 했을 때
+	        if(amount.signum() == 0) {
 	        	System.out.println("송금액을 0원 입력하시면 섭섭해 합니다");
 	        	continue;
 	        }
 	        
-	        if(amount.compareTo(BigDecimal.ZERO)<0) {
+	        // 송금액을 음수로 입력 했을 때
+	        if(amount.signum() < 0) {
 	        	System.out.println("음수를 송금액으로 입력 할 수 없습니다. 송금액을 다시 입력해주세요.");
 	        	continue;
 	        }
 	        
+	        // 송금액을 소수를 입력 했을 때
+	    	if(amount.scale() > 0) {
+	    		System.out.println("소수를 입금액으로 입력 할 수 없습니다. 입금액을 다시 입력해주세요.");
+	    		continue;
+	    	}
+	        
+	    	// 송금액이 잔액보다 클 때
 	        if(senderAccount.getBalance().compareTo(amount) < 0) {
 	        	System.out.println("송금액이 잔액보다 더 큽니다. 다시 입력해주세요.");
 	        	continue;
@@ -269,10 +297,10 @@ public class Bank {
 	        
 	        senderAccount.withdraw(amount);
 	        System.out.printf("송금하는 계좌인 %s계좌에 남아있는 잔액은 %s원 입니다.\n"
-					, senderAccount.getAccNo(), senderAccount.getBalance());
+					, senderAccount.getAccNo(), df.format(senderAccount.getBalance()));
 	        receiverAccount.deposit(amount);
 	        System.out.printf("송금받는 계좌인 %s계좌에 남아있는 잔액은 %s원 입니다.\n"
-	        		, receiverAccount.getAccNo(), receiverAccount.getBalance());
+	        		, receiverAccount.getAccNo(), df.format(receiverAccount.getBalance()));
 	        
 	        System.out.println("송금을 종료합니다");
 	        return;

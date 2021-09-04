@@ -35,7 +35,7 @@ public class SavingAccount extends Account{
     @Override
     public void getAccountInfo(Account account) {
         //TODO
-    	System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표금액: %s\n", 
-    			this.category, super.accNo, super.owner, this.balance, this.goalAmount);
+    	System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표금액: %s원\n", 
+    			getCategory(), getAccNo(), getOwner(), getBalance(), getGoalAmount());
     }    
 }

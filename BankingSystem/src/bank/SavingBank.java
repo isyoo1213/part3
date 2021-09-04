@@ -5,10 +5,14 @@ import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+
 public class SavingBank extends Bank {
+	
+	
 	
     public Account withdraw(SavingAccount account) throws Exception{
         // TODO: Account의 출금 메서드에서 잔액/목표 금액 체크하여 조금 다르게 구현
@@ -36,10 +40,31 @@ public class SavingBank extends Bank {
     	Scanner scan = new Scanner(System.in);
     	
     	System.out.println("계좌주 이름을 설정하세요");
-    	owner = scan.next();
+    	owner = scan.next();    	
     	
-    	System.out.println("목표금액을 입력하세요");
-    	goalAmount = scan.nextBigDecimal();
+    	re:while(true) {
+    		System.out.println("목표금액을 입력하세요");
+    		
+    		try {
+    			goalAmount = scan.nextBigDecimal();
+    		}catch(InputMismatchException e) {
+    			scan.next();
+    			System.out.println("목표금액을 잘못입력하셨습니다. 다시 입력창으로 보내겠습니다.");
+    			continue;
+    		}
+    		
+    		if(goalAmount.signum() < 0) {
+    			System.out.println("음수를 입력할 수 없습니다.");
+    		}
+    		
+    		if(goalAmount.scale() > 0) {
+    			System.out.println("소수는 입력할 수 없습니다.");
+    			continue;
+    		}
+    		
+    		break;
+    	}
+    	
     	
         try{
         	//SavingAccount account = new SavingAccount(String.valueOf(df2.format(++seq)), owner, BigDecimal.ZERO, goalAmount);

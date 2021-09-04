@@ -16,11 +16,13 @@ public class BankTest {
         CentralBank centralBank = CentralBank.getInstance();
         // 예금 계좌와 적금 계좌 생성
         Bank bank1 = new Bank();
+        Bank bank3 = new Bank();
         SavingBank bank2 = new SavingBank();
         ArrayList<Account> accountList = new ArrayList<>();
 
         accountList.add(bank1.createAccount());
         accountList.add(bank2.createAccount());
+        accountList.add(bank3.createAccount());
         centralBank.setAccountList(accountList);
 
         boolean isActive = true;
