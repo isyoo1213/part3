@@ -39,7 +39,7 @@ public class Bank {
             }else if(account.getCategory().equals("S")) { // Account가 적금일 때
         		Bank bank = new SavingBank();
         		SavingBank savingBank = (SavingBank)bank;
-        		if(savingBank.withdraw((SavingAccount)account)==null) { // 적금계좌조회시 규정에 어긋나면 계좌 입력창으로 보내기
+        		if(savingBank.withdraw((SavingAccount)account)==null) { // 적금계좌조회시 규정에 어긋나면 메뉴 입력창으로 보내기
         			return;            	
         		}
         		else {
@@ -257,12 +257,6 @@ public class Bank {
         //TODO
         if(senderAccount.getAccNo().equals(receiverAccount.getAccNo())) {
         	System.out.println("\n본인 계좌로의 송금은 입금을 이용해주세요. 종료하겠습니다.");
-        	return;
-        }
-         
-        //TODO
-        if(receiverAccount.getCategory().equals("S")) {
-        	System.out.println("\n적금 계좌로는 송금이 불가합니다. 종료하겠습니다.");
         	return;
         }
 	        
