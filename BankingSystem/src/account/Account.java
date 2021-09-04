@@ -77,17 +77,22 @@ public class Account {
     public void getAccountInfo(Account account){
         //TODO: 계좌의 기본 정보를 아래 형태로 출력해줍니다.
         //계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원
-        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원",account.category,account.accNo,account.owner,account.balance);
+        System.out.printf("계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 \n",account.category,account.accNo,account.owner,account.balance);
     }
 
     public BigDecimal withdraw(BigDecimal amount) throws Exception{
         //TODO: 출금액을 받아서 출금하는 기본 메소드입니다. this를 이용해 구현해보세요.
-        this.balance.subtract(amount);
+        if(this.balance.subtract(amount).compareTo(BigDecimal.ZERO)>=0) {
+            this.balance = this.balance.subtract(amount);
+        }
+        else{
+            System.out.println("잔액이 부족합니다.");
+        }
         return amount;
     }
     public BigDecimal deposit(BigDecimal amount){
         //TODO: 입금액을 받아서 입금하는 기본 메소드입니다. this를 이용해 구현해보세요.
-        this.balance.add(amount);
+        this.balance = this.balance.add(amount);
         return amount;
     }
 }
