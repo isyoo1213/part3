@@ -36,24 +36,21 @@ public class Bank {
                 flag = false;
                 break;
             } else if (account.getCategory().equals("N")) {
-                break;
-            }
-        }
-        // 출금처리
-        if (flag) {
-            System.out.println("\n출금할 금액을 입력하세요.");
-            BigDecimal amount = scanner.nextBigDecimal();
-            // TODO: interestCalculators 이용하 이자 조회 및 출금
-            try {
-                BigDecimal amount2 = account.withdraw(amount);
-                BigDecimal interest = interestCalculators.get(account.getCategory()).getInterest(account.getBalance()).multiply(account.getBalance());
-                // 이자를 여기다가 붙혀줘야 할까...?
-                // 소수점 없애기 위해 .intValue() 후 다시 new BigDecimal
+                System.out.println("\n출금할 금액을 입력하세요.");
+                BigDecimal amount = scanner.nextBigDecimal();
+                // TODO: interestCalculators 이용하 이자 조회 및 출금
+                try {
+                    BigDecimal amount2 = account.withdraw(amount);
+                    BigDecimal interest = interestCalculators.get(account.getCategory()).getInterest(account.getBalance()).multiply(account.getBalance());
+                    // 이자를 여기다가 붙혀줘야 할까...?
+                    // 소수점 없애기 위해 .intValue() 후 다시 new BigDecimal
 //                account.setBalance(new BigDecimal(account.getBalance().add(interest).intValue()));
-                if (amount2 != null)
-                    System.out.printf("%s원 출금에 성공하였습니다. \n현재 잔액 : %s, 이자 : %s", amount, account.getBalance(), interest);
-            } catch (Exception e) {
-                e.printStackTrace();
+                    if (amount2 != null)
+                        System.out.printf("%s원 출금에 성공하였습니다. \n현재 잔액 : %s, 이자 : %s", amount, account.getBalance(), interest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
             }
         }
     }
