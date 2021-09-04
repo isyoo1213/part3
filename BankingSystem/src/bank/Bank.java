@@ -37,15 +37,17 @@ public class Bank {
             	System.out.println("없는 계좌번호입니다. 다시 계좌번호 입력창으로 보내드리겠습니다.");
             	continue;
             }else if(account.getCategory().equals("S")) { // Account가 적금일 때
-        		Bank bank = new SavingBank();
-        		SavingBank savingBank = (SavingBank)bank;
-        		if(savingBank.withdraw((SavingAccount)account)==null) { // 적금계좌조회시 규정에 어긋나면 메뉴 입력창으로 보내기
-        			return;            	
-        		}
-        		else {
-        			System.out.println("계좌를 찾았습니다.");
-        			break;
-        		}
+            	if(account instanceof SavingAccount) {
+	        		Bank bank = new SavingBank();
+	        		SavingBank savingBank = (SavingBank)bank;
+	        		if(savingBank.withdraw((SavingAccount)account)==null) { // 적금계좌조회시 규정에 어긋나면 메뉴 입력창으로 보내기
+	        			return;            	
+	        		}
+	        		else {
+	        			System.out.println("계좌를 찾았습니다.");
+	        			break;
+	        		}
+            	}
             }
             else {
             	System.out.println("계좌를 찾았습니다.");
@@ -223,14 +225,20 @@ public class Bank {
 	    	senderAccount = findAccount(senderAccNo);
 	    	
 	    	if(senderAccount == null) {
-	    		System.out.println("이용하시려는 계좌를 찾을 수 없으니 다시 입력란으로 보내겠습니다.");
+	    		System.out.println("이용하시려는 계좌를 찾을 수 없으니 다시 계좌 입력란으로 보내겠습니다.");
 	    		continue sender;
 	    	}
+	    	else if(senderAccount instanceof SavingAccount) {
+	    		System.out.println("적금계좌에서 다른계좌로 송금이 불가능하니 다시 계좌 입력란으로 보내겠습니다.");
+	    		continue sender;
+	    	}	    		
 	    	else {
 	    		System.out.println("계좌를 찾았습니다.");
 	    		break;
 	    	}
     	}
+    	
+    	
     	
     	// 돈이 하나도 없을 때
     	if(senderAccount.getBalance().signum() == 0)
