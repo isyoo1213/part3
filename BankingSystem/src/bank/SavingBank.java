@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 public class SavingBank extends Bank {
 
-    public void withdraw(SavingAccount account) throws Exception{
+    public void withdraw(SavingAccount account) {
         // TODO: Account의 출금 메서드에서 잔액/목표 금액 체크하여 조금 다르게 구현
         // throws Exception 적금 계좌는 잔액이 목표 금액(%s원) 이상이어야 출금 가능합니다.
     }
