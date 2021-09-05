@@ -25,12 +25,14 @@ public class BankTest {
 
         boolean isActive = true;
         while (isActive) {
-            System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 종료");
+
+            System.out.println("\n1. 계좌 목록 | 2. 출금 | 3. 입금 | 4. 송금 | 5. 일반계좌 생성| 6. 적금계좌 생성| 7. 종료");
             int menuNo = scanner.nextInt();
             switch (menuNo) {
                 case 1:
                     int sizeOfBank = centralBank.getAccountList().size();
-                    for (int i=0; i<sizeOfBank; i++) {
+                    System.out.println(sizeOfBank);
+                    for (int i = 0; i < sizeOfBank; i++) {
                         centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
                     }
                     break;
@@ -44,10 +46,18 @@ public class BankTest {
                     bank2.transfer();
                     break;
                 case 5:
+                    accountList.add(bank1.createAccount());
+                    break;
+                case 6:
+                    accountList.add(bank2.createAccount());
+                    break;
+                case 7:
                     isActive = false;
                     break;
             }
         }
         System.out.println("뱅킹 프로그램을 종료합니다.");
+
+
     }
 }
