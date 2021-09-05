@@ -64,17 +64,51 @@ public class Bank {
 
     }
 
-    public Account createAccount() throws InputMismatchException {
+    public  Account createAccount() throws OwnerException {
         //TODO: 계좌 생성하는 메서드 구현
-        try {
-            // 계좌번호 채번
-            // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
-            //TODO
-            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
-            return account;
-        }catch (){
-            //TODO: 오류 throw
+        // 계좌번호 채번
+        // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
+        //TODO
+
+        if(this.getCountAcc() == 0){
+            this.setCountAcc(this.getCountAcc() + 1);
         }
+
+        String newOwner = null;
+        boolean createActive = true;
+        while(createActive){
+
+            System.out.println("\n일반계좌 생성을 시작합니다.");
+            System.out.println("생성하시려는 일반계좌의 계좌주 성함을 입력해주세요.");
+            newOwner = scanner.next();
+
+            //계좌주 이름이 완성형 한글이 아닐 경우 exception 처리
+            try{
+                if(newOwner.matches("[가-힣].+")){
+                    createActive = false;
+                } else {
+                    createActive = true;
+                    throw new OwnerException("이름은 완성된 한글로만 입력할 수 있습니다.");
+                }
+            } catch (OwnerException e ){
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        String newAccNo = String.format("%04d", this.getCountAcc());
+        BigDecimal newBalance = new BigDecimal("0");
+
+        Account account = new Account(newAccNo, newOwner, newBalance);
+        account.setActive(true);
+        account.setCategory("N");
+
+        System.out.printf("\n%s님 일반계좌가 발급되었습니다.\n", newOwner);
+        account.getAccountInfo(account); //출력
+
+        this.setCountAcc(this.getCountAcc()+1);
+
+        return account;
     }
 
     public Account findAccount(String accNo){
