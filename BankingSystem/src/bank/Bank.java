@@ -54,14 +54,49 @@ public class Bank {
         }
     }
 
-    public void deposit(){
-        //TODO: 입금 메서드 구현
-        // 존재하지 않는 계좌이면 다시 물어보기
-        System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+    public void deposit() throws AccountException, AmountException{
 
-        // TODO: 입금 처리
-        System.out.println("\n입금할 금액을 입력하세요.");
+        boolean depositActive = true;
+        while(depositActive){
+            Account virtualDeopsitAccount;
+            //TODO: 입금 메서드 구현
+            // 존재하지 않는 계좌이면 다시 물어보기
+            // TODO: 입금 처리
 
+            System.out.println("\n입금하시려는 계좌번호를 입력해주세요.");
+            String accNo = scanner.next();
+            virtualDeopsitAccount = this.findAccount(accNo);
+
+            try{
+                if(virtualDeopsitAccount == null){
+                    throw new AccountException("올바른 계좌번호를 입력해주세요.");
+                } else {
+                    System.out.println("\n입금할 금액을 입력하세요.");
+                    String strAmount = scanner.next();
+                    BigDecimal depositAmount;
+
+                    if(!strAmount.matches("[0-9]+")){
+                        throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                    } else {
+                        depositAmount = new BigDecimal(strAmount);
+                    }
+                    if (depositAmount.compareTo(BigDecimal.ZERO) <= 0) {
+                        throw new AmountException("1원 이상의 입금 금액을 입력해주세요");
+                    } else {
+                        this.findAccount(accNo).deposit(depositAmount);
+                        virtualDeopsitAccount.setBalance(this.findAccount(accNo).getBalance());
+                        System.out.println("입금이 완료됐습니다."+"\n"+virtualDeopsitAccount.getAccNo()+ "계좌의 잔액은 "+virtualDeopsitAccount.getBalance()+"원 입니다.");
+                    }
+                    break;
+                }
+            } catch ( AccountException e){
+                depositActive = false;
+                System.out.println(e.getMessage());
+            } catch ( AmountException e){
+                depositActive = false;
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public  Account createAccount() throws OwnerException {
