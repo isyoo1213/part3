@@ -1,7 +1,5 @@
 package account;
 
-import bank.Bank;
-
 import java.math.BigDecimal;
 
 //TODO: SavingAccount는 Account에서 상속을 받습니다.

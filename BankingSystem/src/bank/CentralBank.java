@@ -1,7 +1,6 @@
 package bank;
 
 import account.Account;
-
 import java.util.ArrayList;
 
 public class CentralBank {

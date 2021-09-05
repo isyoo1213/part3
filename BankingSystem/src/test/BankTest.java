@@ -5,7 +5,6 @@ import account.SavingAccount;
 import bank.Bank;
 import bank.CentralBank;
 import bank.SavingBank;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
