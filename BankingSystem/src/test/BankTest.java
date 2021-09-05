@@ -1,6 +1,7 @@
 package test;
 
 import account.Account;
+import account.SavingAccount;
 import bank.Bank;
 import bank.CentralBank;
 import bank.SavingBank;
@@ -10,17 +11,19 @@ import java.util.Scanner;
 
 public class BankTest {
     private static Scanner scanner = new Scanner(System.in);
-    private static Bank bank = new Bank();
+    private static Bank basicBank = new Bank();
+    private static SavingBank savingBank = new SavingBank();
     public static void main(String[] args) throws Exception {
 
         CentralBank centralBank = CentralBank.getInstance();
         // 예금 계좌와 적금 계좌 생성
-        Bank bank1 = new Bank();
-        SavingBank bank2 = new SavingBank();
+        Bank basicBank = new Bank();
+        SavingBank savingBank = new SavingBank();
         ArrayList<Account> accountList = new ArrayList<>();
 
-        accountList.add(bank1.createAccount());
-        accountList.add(bank2.createAccount());
+        accountList.add(BankTest.basicBank.createAccount());
+        accountList.add(BankTest.basicBank.createAccount());
+        accountList.add(BankTest.savingBank.createAccount());
         centralBank.setAccountList(accountList);
 
         boolean isActive = true;
@@ -31,17 +34,22 @@ public class BankTest {
                 case 1:
                     int sizeOfBank = centralBank.getAccountList().size();
                     for (int i=0; i<sizeOfBank; i++) {
-                        centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+                        if(centralBank.getAccountList().get(i) instanceof SavingAccount){
+                            ((SavingAccount)(centralBank.getAccountList().get(i))).getAccountInfo(((SavingAccount)(centralBank.getAccountList().get(i))));
+                        } else {
+                            centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+                        }
+
                     }
                     break;
                 case 2:
-                    bank2.withdraw();
+                    savingBank.withdraw();
                     break;
                 case 3:
-                    bank2.deposit();
+                    savingBank.deposit();
                     break;
                 case 4:
-                    bank2.transfer();
+                    savingBank.transfer();
                     break;
                 case 5:
                     isActive = false;
