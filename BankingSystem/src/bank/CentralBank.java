@@ -10,6 +10,9 @@ public class CentralBank {
 
     private static CentralBank instance = new CentralBank();
 
+    private CentralBank(){
+    }
+
     //TODO: accountList(Account로 이루어진 ArrayList)
 
     private static ArrayList<Account> accountList = new ArrayList<Account>();
