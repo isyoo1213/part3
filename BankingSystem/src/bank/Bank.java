@@ -31,27 +31,103 @@ public class Bank {
     HashMap<String, InterestCalculator> interestCalculatorHashMap = new HashMap<>();
 
     // 뱅킹 시스템의 기능들
-    public void withdraw() throws Exception {
+    public void withdraw() throws AccountException, BalanceException, AmountException {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
+        // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
+        // TODO: interestCalculators 이용하 이자 조회 및 출금
         //여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
 
-        // 계좌번호 입력
-        Account account;
-        while(true){
+        //계좌 종류 별 이자 계산을 위한 InterestCalculator 인스턴스와 interest 객체 생성
+        BasicInterestCalculator basicInterestCalculator = new BasicInterestCalculator();
+        SavingInterestCalculator savingInterestCalculator = new SavingInterestCalculator();
+        InterestCalculator bic = basicInterestCalculator;
+        InterestCalculator sic = savingInterestCalculator;
+        interestCalculatorHashMap.put("N", bic);
+        interestCalculatorHashMap.put("S", bic);
+        BigDecimal interest = null;
+
+        //외부 while문의 조건으로 findAccountActive 변수 생성
+        boolean findAccountActive = true;
+
+        while(findAccountActive){
+
+            //하드코딩을 피하기 위해 accountlist에서 계좌를 찾아 virtualAccount로 할당한 후 사용
+            Account virtualWithdrawAccount = null;
+            SavingAccount virtualSavingWithdrawAccount = null;
+
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
-            // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
 
+            //적금계좌일 경우 SavingAccount의 메서드를 사용하기 위해 다운캐스팅
+            if (this.findAccount(accNo) instanceof SavingAccount) {
+                virtualSavingWithdrawAccount = (SavingAccount) this.findAccount(accNo);
+            } else {
+                virtualWithdrawAccount = this.findAccount(accNo);
+            }
+
+            try{
+                //가상계좌가 존재하지 않을 경우 exception 처리
+                if (virtualWithdrawAccount == null && virtualSavingWithdrawAccount == null) {
+                    throw new AccountException("올바른 계좌번호를 입력해주세요.");
+                } else {
+                    boolean withrawActive = true;
+                    while (withrawActive) {
+                        //가상계좌가 일반계좌일 경우
+                        if (virtualWithdrawAccount instanceof Account) {
+
+                            System.out.println("\n출금할 금액을 입력하세요.");
+                            String strAmount = scanner.next();
+                            //입력받은 금액을 BigDecimal 형으로 담아줄 withrawAmount 변수 선언
+                            BigDecimal withdrawAmount;
+
+                            //출금 금액을 withdrawAmount 변수를 생성해 할당하고, 숫자형이 아닌 경우 exception 처리
+                            if (!strAmount.matches("[0-9]+")) {
+                                throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                            } else {
+                                withdrawAmount = new BigDecimal(strAmount);
+                            }
+
+                            //출금 금액이 0이하일 경우 exception 처리
+                            if (withdrawAmount.compareTo(BigDecimal.ZERO) <= 0) {
+                                throw new BalanceException("올바른 출금 금액을 입력해주세요.");
+                                //출금 금액이 계좌의 금액보다 클 경우 exception 처리
+                            } else if (virtualWithdrawAccount.getBalance().compareTo(withdrawAmount) < 0) {
+                                throw new AmountException("잔액이 모자랍니다.");
+                            } else {
+                                this.findAccount(accNo).withdraw(withdrawAmount);
+                                virtualWithdrawAccount.setBalance(this.findAccount(accNo).getBalance());
+                                interest = interestCalculatorHashMap.get("N").getInsterest(withdrawAmount);
+                                System.out.println("출금이 완료됐습니다." + "\n" + virtualWithdrawAccount.getAccNo() + "계좌의 잔액은 " + virtualWithdrawAccount.getBalance() + "원 입니다.");
+                                System.out.println("출금액에 대한 이자는 " + interest + "원 입니다.");
+                            }
+                        } else {
+                            //가상계좌가 적금 계좌일 경우 SavingBank의 withdraw 메서드가 호출되도록 bank인스턴스를 다운캐스팅
+                            //SavingBank의 withdraw 메서드가 반환하는 출금 금액을 savingWithdrawAmount에 할당
+                            BigDecimal savingWithdrawAmount = ((SavingBank)this).withdraw(virtualSavingWithdrawAccount);
+                            if(savingWithdrawAmount != null){
+                                interest = interestCalculatorHashMap.get("S").getInsterest(savingWithdrawAmount);
+
+                                // 출력 구문을 통일하려 했지만 실패
+                                virtualWithdrawAccount = virtualSavingWithdrawAccount;
+                                System.out.println("출금이 완료됐습니다." + "\n" + virtualWithdrawAccount.getAccNo() + "계좌의 잔액은 " + virtualWithdrawAccount.getBalance() + "원 입니다.");
+                                System.out.println("출금액에 대한 이자는 " + interest + "원 입니다.");
+                            }
+                        }
+                        break;
+                    }
+                }
+
+            } catch ( AccountException e){
+                System.out.println(e.getMessage());
+            } catch ( BalanceException e){
+                System.out.println(e.getMessage());
+            } catch ( AmountException e){
+                System.out.println(e.getMessage());
+            }
+            break;
         }
-        // 출금처리
-        System.out.println("\n출금할 금액을 입력하세요.");
-        // TODO: interestCalculators 이용하 이자 조회 및 출금
-        try {
 
-        }catch (Exception e){
-
-        }
     }
 
     public void deposit() throws AccountException, AmountException{
