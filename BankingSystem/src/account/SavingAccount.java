@@ -11,16 +11,25 @@ public class SavingAccount extends Account{
 
     public SavingAccount(){
         //TODO: 카테고리를 S로 설정해 줍니다.
+        this.category = "S";
     }
 
-    public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal goalAmount) {
-        // TODO
+    public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal newGoalAmount) {
+        super(accNo, owner, balance);
+
+        this.setActive(true);
+        this.setCategory("S");
+        this.goalAmount = newGoalAmount;
     }
 
     //TODO: GoalAmount getter 구현
+    public BigDecimal getGoalAmount() {
+        return this.goalAmount;
+    }
 
     //TODO: getAccountInfo를 재정의하여 "목표 금액"도 노출해줍니다.
-    public void getAccountInfo(Account account) {
+    public void getAccountInfo(SavingAccount account) {
         //TODO
+        System.out.printf("\n계좌종류: %s | 계좌번호: %s | 계좌주명: %s | 잔액: %s원 | 목표금액: %s원\n", account.category, account.accNo, account.owner, account.balance, account.goalAmount);
     }
 }
