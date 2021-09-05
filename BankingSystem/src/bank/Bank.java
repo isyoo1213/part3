@@ -1,8 +1,7 @@
 package bank;
 
-
-
 import account.Account;
+import account.SavingAccount;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -15,61 +14,29 @@ public class Bank {
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
-    public static int countAcc = 0;
-    public static int countOwn = 0;
-
-    public static int getCountAcc() {
-        return countAcc;
-    }
-
-    public static void setCountAcc(int countAcc) {
-        Bank.countAcc = countAcc;
-    }
 
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
         //TODO: key, value 형태의 HashMap을 이용하여 interestCalculators 구현
         //여기서 key: category, value: 각 category의 InterestCalculator 인스턴스
-        HashMap<String, InterestCalculator> interestCalculatorHashMap = new HashMap<>();
-        BasicInterestCalculator basicInterestCalculator = new BasicInterestCalculator();
-        InterestCalculator basicValue = basicInterestCalculator;
-        SavingInterestCalculator savingInterestCalculator = new SavingInterestCalculator();
-        InterestCalculator savingValue = (InterestCalculator) savingInterestCalculator;
-
-        interestCalculatorHashMap.put("N", basicValue);
-        interestCalculatorHashMap.put("S", savingValue);
-
 
         // 계좌번호 입력
-//        Account account;
+        Account account;
         while(true){
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
-            for(Account account : CentralBank.getAccountList()){
-                if( account.equals(accNo) ){
-
-                    if(account.getCategory() == "S"){
-                        return 
-                    }
-
-                } else {
-                    System.out.println("올바른 계좌번호를 입력해주세요.");
-                }
-
-            }
-
             // TODO: 검색 -> 적금 계좌이면 적금 계좌의 출금 메소드 호출 -> 완료시 break
 
         }
         // 출금처리
-        String withdrawAmount = scanner.next();
+        System.out.println("\n출금할 금액을 입력하세요.");
         // TODO: interestCalculators 이용하 이자 조회 및 출금
-//        try {
-//
-//        }catch (Exception e){
-//
-//        }
+        try {
+
+        }catch (Exception e){
+
+        }
     }
 
     public void deposit(){
@@ -82,45 +49,24 @@ public class Bank {
 
     }
 
-    public  Account createAccount() throws InputMismatchException {
+    public Account createAccount() throws InputMismatchException {
         //TODO: 계좌 생성하는 메서드 구현
-//        try {
+        try {
             // 계좌번호 채번
             // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
             //TODO
-
-            if(countAcc == 0){
-                ++countAcc;
-            }
-            if(countOwn == 0){
-                ++countOwn;
-            }
-
-            String newAccNo = String.format("%04d", countAcc);
-            String newOwner = "손님"+countOwn;
-            BigDecimal newBalance = new BigDecimal("0");
-
-            Account account = new Account(newAccNo, newOwner, newBalance);
-            account.setActive(true);
-            account.setCategory("N");
-
-
-            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", newOwner);
-            account.getAccountInfo(account); //출력
-
-            ++countAcc;
-
+            System.out.printf("\n%s님 계좌가 발급되었습니다.\n", owner);
             return account;
-//        }catch ( ){
-//            //TODO: 오류 throw
-//        }
+        }catch (){
+            //TODO: 오류 throw
+        }
     }
 
-//    public Account findAccount(String accNo){
-//        //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
-//
-//        return account;
-//    }
+    public Account findAccount(String accNo){
+        //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
+
+        return account;
+    }
 
     public void transfer() throws Exception{
         //TODO: 송금 메서드 구현
@@ -136,5 +82,5 @@ public class Bank {
         //TODO
         System.out.println("\n송금할 금액을 입력하세요.");
         //TODO
-        }
     }
+}
