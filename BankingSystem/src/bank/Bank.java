@@ -78,9 +78,24 @@ public class Bank {
     }
 
     public Account findAccount(String accNo){
+
         //TODO: 계좌리스트에서 찾아서 반환하는 메서드 구현
 
-        return account;
+        boolean validation = false;
+        int goalIndex = 0;
+        for(Account account : CentralBank.getAccountList()){
+            if( account.getAccNo().equals(accNo) ) {
+                validation = account.getAccNo().equals(accNo);
+                goalIndex = CentralBank.getAccountList().indexOf(account);
+                break;
+            }
+        }
+        if(validation){
+            return CentralBank.getAccountList().get(goalIndex);
+        } else {
+            return null;
+        }
+
     }
 
     public void transfer() throws Exception{
