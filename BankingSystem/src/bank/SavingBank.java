@@ -8,9 +8,50 @@ import java.util.NoSuchElementException;
 
 public class SavingBank extends Bank {
 
-    public void withdraw(SavingAccount account) {
+    public BigDecimal withdraw(SavingAccount account) throws AccountException, AmountException, BalanceException{
+
+        SavingInterestCalculator savingInterestCalculator = new SavingInterestCalculator();
+        InterestCalculator sic = (InterestCalculator) savingInterestCalculator;
+        interestCalculatorHashMap.put("S", sic);
+        BigDecimal savingWithdrawAmount = null;
+
         // TODO: Account의 출금 메서드에서 잔액/목표 금액 체크하여 조금 다르게 구현
         // throws Exception 적금 계좌는 잔액이 목표 금액(%s원) 이상이어야 출금 가능합니다.
+        boolean savingWithrawActive = true;
+        while(savingWithrawActive) {
+            try {
+                if (account.getBalance().compareTo(account.getGoalAmount()) < 0) {
+                    throw new AmountException("적금 계좌의 잔액이 적금 목표 금액을 채우지 못했습니다.");
+                } else {
+                    System.out.println("\n출금할 금액을 입력하세요.");
+                    String strAmount = scanner.next();
+                    BigDecimal withdrawAmount;
+
+                    if(!strAmount.matches("[0-9]+")){
+                        throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                    } else {
+                        withdrawAmount = new BigDecimal(strAmount);
+                    }
+
+                    if (withdrawAmount.compareTo(BigDecimal.ZERO) <= 0) {
+                        throw new BalanceException("올바른 출금 금액을 입력해주세요.");
+                    } else if (account.getBalance().compareTo(withdrawAmount) < 0) {
+                        throw new AmountException("잔액이 모자랍니다.");
+                    } else {
+                        this.findAccount(account.getAccNo()).withdraw(withdrawAmount);
+                        account.setBalance(this.findAccount(account.getAccNo()).getBalance());
+                        savingWithdrawAmount = withdrawAmount;
+                    }
+                    break;
+                }
+            } catch (AmountException e){
+                System.out.println(e.getMessage());
+            } catch (BalanceException e){
+                System.out.println(e.getMessage());
+            }
+            break;
+        }
+        return savingWithdrawAmount;
     }
 
     // TODO: 목표금액을 입력받아서 SavingAccount 객체 생성하도록 재정의
