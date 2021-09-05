@@ -15,6 +15,21 @@ public class Bank {
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
 
+    //계좌번호 생성을 위한 countAcc 변수 생성
+    protected static int countAcc = 0;
+
+    //countAcc의 getter, setter 생성
+    public static int getCountAcc() {
+        return countAcc;
+    }
+
+    public static void setCountAcc(int countAcc) {
+        Bank.countAcc = countAcc;
+    }
+
+    //계좌별 InterestCalculator를 담아줄 HashMap 생성
+    HashMap<String, InterestCalculator> interestCalculatorHashMap = new HashMap<>();
+
     // 뱅킹 시스템의 기능들
     public void withdraw() throws Exception {
         //TODO: 출금 메서드 구현
