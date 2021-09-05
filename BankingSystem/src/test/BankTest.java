@@ -11,8 +11,8 @@ import java.util.Scanner;
 public class BankTest {
     private static Scanner scanner = new Scanner(System.in);
     private static Bank bank = new Bank();
-    public static void main(String[] args) throws Exception {
 
+    public static void main(String[] args) throws Exception {
         CentralBank centralBank = CentralBank.getInstance();
         // 예금 계좌와 적금 계좌 생성
         Bank bank1 = new Bank();
@@ -30,8 +30,8 @@ public class BankTest {
             switch (menuNo) {
                 case 1:
                     int sizeOfBank = centralBank.getAccountList().size();
-                    for (int i=0; i<sizeOfBank; i++) {
-                        centralBank.getAccountList().get(i).getAccountInfo(centralBank.getAccountList().get(i));
+                    for (int i = 0; i < sizeOfBank; i++) {
+                        centralBank.getAccountList().get(i).getAccountInfo();
                     }
                     break;
                 case 2:
