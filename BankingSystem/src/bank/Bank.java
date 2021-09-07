@@ -42,7 +42,7 @@ public class Bank {
         InterestCalculator bic = basicInterestCalculator;
         InterestCalculator sic = savingInterestCalculator;
         interestCalculatorHashMap.put("N", bic);
-        interestCalculatorHashMap.put("S", bic);
+        interestCalculatorHashMap.put("S", sic);
         BigDecimal interest = null;
 
         //외부 while문의 조건으로 findAccountActive 변수 생성
