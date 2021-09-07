@@ -74,7 +74,7 @@ public class SavingBank extends Bank {
             }
         }
 
-        String newAccNo = String.format("%04d", this.getCountAcc());
+        String newAccNo = String.format("%04d", this.getSeq());
         BigDecimal newBalance = new BigDecimal("0");
 
         SavingAccount account = new SavingAccount(newAccNo, newOwner, newBalance, newGoalAmount);
@@ -84,7 +84,7 @@ public class SavingBank extends Bank {
         System.out.printf("\n%s님 적금 계좌가 발급되었습니다.\n", newOwner);
         account.getAccountInfo(account); //출력
 
-        this.setCountAcc(this.getCountAcc() + 1);
+        this.setSeq(this.getSeq() + 1);
 
         return account;
 
