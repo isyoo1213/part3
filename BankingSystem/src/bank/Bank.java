@@ -61,13 +61,16 @@ public class Bank {
                     throw new AccountException("올바른 계좌번호를 입력해주세요.");
                 } else {
                     boolean withrawActive = true;
+                    boolean savingWithdrawActive = true;
                     while (withrawActive) {
 
-                        //가상계좌가 일반계좌일 경우
                         if (virtualWithdrawAccount instanceof Account) {
 
                             if(virtualWithdrawAccount instanceof SavingAccount){
-                                ((SavingBank)this).withdraw((SavingAccount)virtualWithdrawAccount);
+                                savingWithdrawActive = ((SavingBank)this).withdraw((SavingAccount)virtualWithdrawAccount);
+                            }
+                            if(savingWithdrawActive == false) {
+                                break;
                             }
 
                             System.out.println("\n출금할 금액을 입력하세요.");
@@ -160,7 +163,7 @@ public class Bank {
         }
     }
 
-    public Account createAccount() throws OwnerException {
+    public Account createAccount() throws OwnerException, AmountException {
         //TODO: 계좌 생성하는 메서드 구현
         // 계좌번호 채번
         // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
@@ -235,90 +238,68 @@ public class Bank {
         boolean transferActive = true;
 
         while (transferActive) {
-            Account virtualTransferAccount1 = null;
-            SavingAccount virtualTransferSavingAccount1 = null;
+            Account virtualTransferAccount1;
 
             System.out.println("\n송금하시려는 계좌번호를 입력해주세요.");
             String fromAccNo = scanner.next();
-            if (this.findAccount(fromAccNo) instanceof SavingAccount) {
-                virtualTransferSavingAccount1 = (SavingAccount) (this.findAccount(fromAccNo));
-            } else if (this.findAccount(fromAccNo) instanceof Account) {
-                virtualTransferAccount1 = this.findAccount(fromAccNo);
-            }
+
+            virtualTransferAccount1 = this.findAccount(fromAccNo);
 
             try {
-                if (virtualTransferAccount1 == null && virtualTransferSavingAccount1 == null) {
+                if (virtualTransferAccount1 == null ) {
                     throw new AccountException("올바른 계좌번호를 입력해주세요.");
-                } else if (virtualTransferSavingAccount1 != null && virtualTransferSavingAccount1.getBalance().compareTo(virtualTransferSavingAccount1.getGoalAmount()) < 0) {
-                    throw new BalanceException("송금을 위한 적금 계좌의 잔액이 부족합니다.");
                 } else {
-                    while (transferActive) {
-                        Account virtualTransferAccount2;
+                    //적금 계좌일 경우 적금 목표액 이상의 잔액을 확보하고 있는지 확인
+                    if(virtualTransferAccount1 instanceof SavingAccount){
+                        transferActive = ((SavingBank)this).withdraw((SavingAccount)virtualTransferAccount1);
+                    }
 
-                        System.out.println("\n어느 계좌번호로 보내시려나요?");
-                        String toAccNo = scanner.next();
-                        virtualTransferAccount2 = this.findAccount(toAccNo);
-
-                        if (virtualTransferAccount1 instanceof Account) {
-
-                            if (virtualTransferAccount2 == null) {
-                                throw new AccountException("올바른 계좌번호를 입력해주세요.");
-                            } else if (virtualTransferAccount2 instanceof SavingAccount) {
-                                throw new AccountException("\n적금 계좌로는 송금이 불가합니다.");
-                            } else if (virtualTransferAccount1.getAccNo() == virtualTransferAccount2.getAccNo()) {
-                                throw new AccountException("\n본인 계좌로의 송금은 입금을 이용해주세요.");
-                            } else {
-                                System.out.println("\n송금할 금액을 입력하세요.");
-                                String strAmount = scanner.next();
-                                BigDecimal transferAmount;
-
-                                if (!strAmount.matches("[0-9]+")) {
-                                    throw new AmountException("금액은 0 이상의 소수점을 제외한 숫자 0~9의 조합으로만 입력해주세요.");
-                                } else {
-                                    transferAmount = new BigDecimal(strAmount);
-                                }
-                                if (transferAmount.compareTo(BigDecimal.ZERO) <= 0) {
-                                    throw new AmountException("1원 이상의 송금 금액을 입력해주세요");
-                                } else if (virtualTransferAccount1.getBalance().compareTo(transferAmount) < 0) {
-                                    throw new BalanceException("잔액이 모자랍니다.");
-                                } else {
-                                    this.findAccount(fromAccNo).withdraw(transferAmount);
-                                    this.findAccount(toAccNo).deposit(transferAmount);
-                                    virtualTransferAccount1.setBalance(this.findAccount(fromAccNo).getBalance());
-                                    virtualTransferAccount2.setBalance(this.findAccount(toAccNo).getBalance());
-                                    System.out.println(virtualTransferAccount1.getAccNo() + "계좌에서 " + virtualTransferAccount2.getAccNo() + "계좌로 송금이 완료됐습니다.");
-                                    System.out.println(virtualTransferAccount1.getAccNo() + "계좌의 잔액은 " + virtualTransferAccount1.getBalance() + "원 입니다.");
-                                    transferActive = false;
-                                }
-                                break;
-                            }
-//                        } else {
-//                            BigDecimal savingTransferAmount = ((SavingBank) this).withdraw(virtualTransferSavingAccount1);
-//                            if (savingTransferAmount != null) {
-//                                this.findAccount(toAccNo).deposit(savingTransferAmount);
-//                                virtualTransferSavingAccount1.setBalance(this.findAccount(fromAccNo).getBalance());
-//                                virtualTransferAccount2.setBalance(this.findAccount(toAccNo).getBalance());
-//                                System.out.println(virtualTransferSavingAccount1.getAccNo() + "계좌에서 " + virtualTransferAccount2.getAccNo() + "계좌로 송금이 완료됐습니다.");
-//                                System.out.println(virtualTransferSavingAccount1.getAccNo() + "계좌의 잔액은 " + virtualTransferSavingAccount1.getBalance() + "원 입니다.");
-//                                transferActive = false;
-//                                break;
-//                            } else {
-//                                transferActive = false;
-//                            }
-                        }
+                    if(transferActive == false){
                         break;
                     }
-                    break;
 
+                    Account virtualTransferAccount2;
+
+                    System.out.println("\n어느 계좌번호로 보내시려나요?");
+                    String toAccNo = scanner.next();
+                    virtualTransferAccount2 = this.findAccount(toAccNo);
+
+                    if (virtualTransferAccount2 == null) {
+                        throw new AccountException("올바른 계좌번호를 입력해주세요.");
+                    } else if (virtualTransferAccount2 instanceof SavingAccount) {
+                        throw new AccountException("\n적금 계좌로는 송금이 불가합니다.");
+                    } else if (virtualTransferAccount1.getAccNo() == virtualTransferAccount2.getAccNo()) {
+                        throw new AccountException("\n본인 계좌로의 송금은 입금을 이용해주세요.");
+                    } else {
+                        System.out.println("\n송금할 금액을 입력하세요.");
+                        String strAmount = scanner.next();
+                        BigDecimal transferAmount;
+
+                        if (!strAmount.matches("[0-9]+")) {
+                            throw new AmountException("금액은 0 이상의 소수점을 제외한 숫자 0~9의 조합으로만 입력해주세요.");
+                        } else {
+                            transferAmount = new BigDecimal(strAmount);
+                        }
+                        if (transferAmount.compareTo(BigDecimal.ZERO) <= 0) {
+                            throw new AmountException("1원 이상의 송금 금액을 입력해주세요");
+                        } else if (virtualTransferAccount1.getBalance().compareTo(transferAmount) < 0) {
+                            throw new BalanceException("잔액이 모자랍니다.");
+                        } else {
+                            this.findAccount(fromAccNo).withdraw(transferAmount);
+                            this.findAccount(toAccNo).deposit(transferAmount);
+                            virtualTransferAccount1.setBalance(this.findAccount(fromAccNo).getBalance());
+                            virtualTransferAccount2.setBalance(this.findAccount(toAccNo).getBalance());
+                            System.out.println(virtualTransferAccount1.getAccNo() + "계좌에서 " + virtualTransferAccount2.getAccNo() + "계좌로 송금이 완료됐습니다.");
+                            System.out.println(virtualTransferAccount1.getAccNo() + "계좌의 잔액은 " + virtualTransferAccount1.getBalance() + "원 입니다.");
+                        }
+                    }
+                    break;
                 }
             } catch (AccountException e) {
-                transferActive = false;
                 System.out.println(e.getMessage());
             } catch (BalanceException e) {
-                transferActive = false;
                 System.out.println(e.getMessage());
             } catch (AmountException e) {
-                transferActive = false;
                 System.out.println(e.getMessage());
             }
         }
