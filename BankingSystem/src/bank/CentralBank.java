@@ -23,13 +23,10 @@ public class CentralBank {
     //TODO: getInstance 함수
 
     public static CentralBank getInstance(){
-
         if( instance == null ){
             instance = new CentralBank();
         }
-
         return instance;
-
     }
 
     //TODO: accountList getter/setter

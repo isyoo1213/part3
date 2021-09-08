@@ -199,8 +199,6 @@ public class Bank {
         BigDecimal newBalance = new BigDecimal("0");
 
         Account account = new Account(newAccNo, newOwner, newBalance);
-        account.setActive(true);
-        account.setCategory("N");
 
         System.out.printf("\n%s님 일반계좌가 발급되었습니다.\n", newOwner);
         account.getAccountInfo(account); //출력

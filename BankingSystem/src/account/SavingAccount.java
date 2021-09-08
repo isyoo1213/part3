@@ -15,9 +15,9 @@ public class SavingAccount extends Account{
     public SavingAccount(String accNo, String owner, BigDecimal balance, BigDecimal newGoalAmount) {
         super(accNo, owner, balance);
 
-        this.setActive(true);
         this.setCategory("S");
         this.goalAmount = newGoalAmount;
+
     }
 
     //TODO: GoalAmount getter 구현

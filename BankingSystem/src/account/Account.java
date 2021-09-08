@@ -25,6 +25,8 @@ public class Account {
         this.accNo = accNo;
         this.owner = owner;
         this.balance = balance;
+        this.isActive = true;
+        this.category = "N";
     }
 
     // TODO: 일반 계좌 클래스의 각 속성에 getter/setter를 제공합니다.
@@ -61,7 +63,7 @@ public class Account {
         this.balance = balance;
     }
 
-    public boolean isActive() {
+    public boolean getisActive() {
         return isActive;
     }
 

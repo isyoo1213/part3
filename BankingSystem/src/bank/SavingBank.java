@@ -80,8 +80,6 @@ public class SavingBank extends Bank {
             BigDecimal newBalance = new BigDecimal("0");
             //적금 계좌 인스턴스 생성
             SavingAccount account = new SavingAccount(newAccNo, newOwner, newBalance, newGoalAmount);
-            account.setActive(true);
-            account.setCategory("S");
 
             System.out.printf("\n%s님 적금 계좌가 발급되었습니다.\n", newOwner);
             account.getAccountInfo(account); //출력
