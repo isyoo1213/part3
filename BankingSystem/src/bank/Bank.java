@@ -12,7 +12,7 @@ public class Bank {
     protected static Scanner scanner = new Scanner(System.in);
     protected static int seq = 0;
     public static DecimalFormat df = new DecimalFormat("#,###");
-
+    
     //seq의 getter, setter 생성
     public static int getSeq() {
         return seq;
@@ -78,7 +78,7 @@ public class Bank {
 
                             //출금 금액을 withdrawAmount 변수를 생성해 할당하고, 숫자형이 아닌 경우 exception 처리
                             if (!strAmount.matches("[0-9]+")) {
-                                throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                                throw new AmountException("금액은 0 이상의 소수점을 제외한 숫자 0~9의 조합으로만 입력해주세요.");
                             } else {
                                 withdrawAmount = new BigDecimal(strAmount);
                             }
@@ -147,7 +147,7 @@ public class Bank {
                     BigDecimal depositAmount;
 
                     if (!strAmount.matches("[0-9]+")) {
-                        throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                        throw new AmountException("금액은 0 이상의 소수점을 제외한 숫자 0~9의 조합으로만 입력해주세요.");
                     } else {
                         depositAmount = new BigDecimal(strAmount);
                     }
@@ -283,7 +283,7 @@ public class Bank {
                                 BigDecimal transferAmount;
 
                                 if (!strAmount.matches("[0-9]+")) {
-                                    throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                                    throw new AmountException("금액은 0 이상의 소수점을 제외한 숫자 0~9의 조합으로만 입력해주세요.");
                                 } else {
                                     transferAmount = new BigDecimal(strAmount);
                                 }

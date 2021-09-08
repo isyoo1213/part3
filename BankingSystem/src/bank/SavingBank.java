@@ -25,7 +25,7 @@ public class SavingBank extends Bank {
                     BigDecimal withdrawAmount;
 
                     if(!strAmount.matches("[0-9]+")){
-                        throw new AmountException("금액은 0~9의 숫자의 조합으로만 입력해주세요.");
+                        throw new AmountException("금액은 0 이상의 소수점을 제외한 숫자 0~9의 조합으로만 입력해주세요.");
                     } else {
                         withdrawAmount = new BigDecimal(strAmount);
                     }
