@@ -40,7 +40,7 @@ public class Bank {
         InterestCalculator sic = savingInterestCalculator;
         interestCalculatorHashMap.put("N", bic);
         interestCalculatorHashMap.put("S", sic);
-        BigDecimal interest = null;
+        BigDecimal interest;
 
         //외부 while문의 조건으로 findAccountActive 변수 생성
         boolean findAccountActive = true;
@@ -49,27 +49,26 @@ public class Bank {
 
             //하드코딩을 피하기 위해 accountlist에서 계좌를 찾아 virtualAccount로 할당한 후 사용
             Account virtualWithdrawAccount = null;
-            SavingAccount virtualSavingWithdrawAccount = null;
 
             System.out.println("\n출금하시려는 계좌번호를 입력하세요.");
             String accNo = scanner.next();
 
-            //적금계좌일 경우 SavingAccount의 메서드를 사용하기 위해 다운캐스팅
-            if (this.findAccount(accNo) instanceof SavingAccount) {
-                virtualSavingWithdrawAccount = (SavingAccount) this.findAccount(accNo);
-            } else {
-                virtualWithdrawAccount = this.findAccount(accNo);
-            }
+            virtualWithdrawAccount = this.findAccount(accNo);
 
             try {
                 //가상계좌가 존재하지 않을 경우 exception 처리
-                if (virtualWithdrawAccount == null && virtualSavingWithdrawAccount == null) {
+                if (virtualWithdrawAccount == null ) {
                     throw new AccountException("올바른 계좌번호를 입력해주세요.");
                 } else {
                     boolean withrawActive = true;
                     while (withrawActive) {
+
                         //가상계좌가 일반계좌일 경우
                         if (virtualWithdrawAccount instanceof Account) {
+
+                            if(virtualWithdrawAccount instanceof SavingAccount){
+                                ((SavingBank)this).withdraw((SavingAccount)virtualWithdrawAccount);
+                            }
 
                             System.out.println("\n출금할 금액을 입력하세요.");
                             String strAmount = scanner.next();
@@ -86,25 +85,16 @@ public class Bank {
                             //출금 금액이 0이하일 경우 exception 처리
                             if (withdrawAmount.compareTo(BigDecimal.ZERO) <= 0) {
                                 throw new BalanceException("올바른 출금 금액을 입력해주세요.");
-                                //출금 금액이 계좌의 금액보다 클 경우 exception 처리
                             } else if (virtualWithdrawAccount.getBalance().compareTo(withdrawAmount) < 0) {
                                 throw new AmountException("잔액이 모자랍니다.");
                             } else {
                                 this.findAccount(accNo).withdraw(withdrawAmount);
                                 virtualWithdrawAccount.setBalance(this.findAccount(accNo).getBalance());
-                                interest = interestCalculatorHashMap.get("N").getInsterest(withdrawAmount);
-                                System.out.println("출금이 완료됐습니다." + "\n" + virtualWithdrawAccount.getAccNo() + "계좌의 잔액은 " + virtualWithdrawAccount.getBalance() + "원 입니다.");
-                                System.out.println("출금액에 대한 이자는 " + interest + "원 입니다.");
-                            }
-                        } else {
-                            //가상계좌가 적금 계좌일 경우 SavingBank의 withdraw 메서드가 호출되도록 bank인스턴스를 다운캐스팅
-                            //SavingBank의 withdraw 메서드가 반환하는 출금 금액을 savingWithdrawAmount에 할당
-                            BigDecimal savingWithdrawAmount = ((SavingBank) this).withdraw(virtualSavingWithdrawAccount);
-                            if (savingWithdrawAmount != null) {
-                                interest = interestCalculatorHashMap.get("S").getInsterest(savingWithdrawAmount);
-
-                                // 출력 구문을 통일하려 했지만 실패
-                                virtualWithdrawAccount = virtualSavingWithdrawAccount;
+                                if(virtualWithdrawAccount instanceof SavingAccount){
+                                    interest = interestCalculatorHashMap.get("S").getInsterest(withdrawAmount);
+                                } else {
+                                    interest = interestCalculatorHashMap.get("N").getInsterest(withdrawAmount);
+                                }
                                 System.out.println("출금이 완료됐습니다." + "\n" + virtualWithdrawAccount.getAccNo() + "계좌의 잔액은 " + virtualWithdrawAccount.getBalance() + "원 입니다.");
                                 System.out.println("출금액에 대한 이자는 " + interest + "원 입니다.");
                             }
@@ -302,19 +292,19 @@ public class Bank {
                                 }
                                 break;
                             }
-                        } else {
-                            BigDecimal savingTransferAmount = ((SavingBank) this).withdraw(virtualTransferSavingAccount1);
-                            if (savingTransferAmount != null) {
-                                this.findAccount(toAccNo).deposit(savingTransferAmount);
-                                virtualTransferSavingAccount1.setBalance(this.findAccount(fromAccNo).getBalance());
-                                virtualTransferAccount2.setBalance(this.findAccount(toAccNo).getBalance());
-                                System.out.println(virtualTransferSavingAccount1.getAccNo() + "계좌에서 " + virtualTransferAccount2.getAccNo() + "계좌로 송금이 완료됐습니다.");
-                                System.out.println(virtualTransferSavingAccount1.getAccNo() + "계좌의 잔액은 " + virtualTransferSavingAccount1.getBalance() + "원 입니다.");
-                                transferActive = false;
-                                break;
-                            } else {
-                                transferActive = false;
-                            }
+//                        } else {
+//                            BigDecimal savingTransferAmount = ((SavingBank) this).withdraw(virtualTransferSavingAccount1);
+//                            if (savingTransferAmount != null) {
+//                                this.findAccount(toAccNo).deposit(savingTransferAmount);
+//                                virtualTransferSavingAccount1.setBalance(this.findAccount(fromAccNo).getBalance());
+//                                virtualTransferAccount2.setBalance(this.findAccount(toAccNo).getBalance());
+//                                System.out.println(virtualTransferSavingAccount1.getAccNo() + "계좌에서 " + virtualTransferAccount2.getAccNo() + "계좌로 송금이 완료됐습니다.");
+//                                System.out.println(virtualTransferSavingAccount1.getAccNo() + "계좌의 잔액은 " + virtualTransferSavingAccount1.getBalance() + "원 입니다.");
+//                                transferActive = false;
+//                                break;
+//                            } else {
+//                                transferActive = false;
+//                            }
                         }
                         break;
                     }
