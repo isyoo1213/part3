@@ -43,7 +43,7 @@ public class SavingBank extends Bank {
             try {
                 if (!newOwner.matches("[가-힣]{2,4}")) {
                     createActive = true;
-                    throw new OwnerException("이름은 완성된 한글로만 입력할 수 있습니다.");
+                    throw new OwnerException("이름은 완성된 한글 2~4자로만 입력할 수 있습니다.");
                 } else {
                     while(createActive){
                         System.out.println("\n적금 계좌의 목표 금액을 입력해주세요.(100만원 이상)");

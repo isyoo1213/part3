@@ -183,7 +183,7 @@ public class Bank {
                     createActive = false;
                 } else {
                     createActive = true;
-                    throw new OwnerException("이름은 완성된 한글로만 입력할 수 있습니다.");
+                    throw new OwnerException("이름은 완성된 한글 2~4로만 입력할 수 있습니다.");
                 }
             } catch (OwnerException e) {
                 System.out.println(e.getMessage());
