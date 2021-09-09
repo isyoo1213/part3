@@ -109,12 +109,7 @@ public class Bank {
                         break;
                     }
                 }
-
-            } catch (AccountException e) {
-                System.out.println(e.getMessage());
-            } catch (BalanceException e) {
-                System.out.println(e.getMessage());
-            } catch (AmountException e) {
+            } catch (AccountException | BalanceException | AmountException e) {
                 System.out.println(e.getMessage());
             }
             break;
@@ -157,10 +152,7 @@ public class Bank {
                     }
                     break;
                 }
-            } catch (AccountException e) {
-                depositActive = false;
-                System.out.println(e.getMessage());
-            } catch (AmountException e) {
+            } catch (AccountException | AmountException e) {
                 depositActive = false;
                 System.out.println(e.getMessage());
             }
@@ -297,11 +289,7 @@ public class Bank {
                     }
                     break;
                 }
-            } catch (AccountException e) {
-                System.out.println(e.getMessage());
-            } catch (BalanceException e) {
-                System.out.println(e.getMessage());
-            } catch (AmountException e) {
+            } catch (AccountException | BalanceException | AmountException e) {
                 System.out.println(e.getMessage());
             }
         }
