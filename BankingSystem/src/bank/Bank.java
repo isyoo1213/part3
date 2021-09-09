@@ -290,6 +290,7 @@ public class Bank {
                     break;
                 }
             } catch (AccountException | BalanceException | AmountException e) {
+                transferActive = false;
                 System.out.println(e.getMessage());
             }
         }
