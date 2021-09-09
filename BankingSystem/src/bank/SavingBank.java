@@ -41,7 +41,7 @@ public class SavingBank extends Bank {
             newOwner = scanner.next();
 
             try {
-                if (!newOwner.matches("[가-힣].+")) {
+                if (!newOwner.matches("[가-힣]{2,4}")) {
                     createActive = true;
                     throw new OwnerException("이름은 완성된 한글로만 입력할 수 있습니다.");
                 } else {
@@ -76,7 +76,7 @@ public class SavingBank extends Bank {
 
         if(savingCreateAccountActive) {
             //적금 계좌번호 생성
-            String newAccNo = String.format("%04d", this.getSeq());
+            String newAccNo = String.format("%04d", Bank.getSeq());
             BigDecimal newBalance = new BigDecimal("0");
             //적금 계좌 인스턴스 생성
             SavingAccount account = new SavingAccount(newAccNo, newOwner, newBalance, newGoalAmount);
@@ -84,7 +84,7 @@ public class SavingBank extends Bank {
             System.out.printf("\n%s님 적금 계좌가 발급되었습니다.\n", newOwner);
             account.getAccountInfo(account); //출력
 
-            this.setSeq(this.getSeq() + 1);
+            Bank.setSeq(Bank.getSeq() + 1);
 
             return account;
 

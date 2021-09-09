@@ -165,8 +165,8 @@ public class Bank {
         // 계좌번호는 "0000"+증가한 seq 포맷을 가진 번호입니다.
         //TODO
 
-        if (this.getSeq() == 0) {
-            this.setSeq(this.getSeq() + 1);
+        if (Bank.getSeq() == 0) {
+            Bank.setSeq(Bank.getSeq() + 1);
         }
 
         String newOwner = null;
@@ -179,7 +179,7 @@ public class Bank {
 
             //계좌주 이름이 완성형 한글이 아닐 경우 exception 처리
             try {
-                if (newOwner.matches("[가-힣].+")) {
+                if (newOwner.matches("[가-힣]{2,4}")) {
                     createActive = false;
                 } else {
                     createActive = true;
@@ -191,7 +191,7 @@ public class Bank {
 
         }
 
-        String newAccNo = String.format("%04d", this.getSeq());
+        String newAccNo = String.format("%04d", Bank.getSeq());
         BigDecimal newBalance = new BigDecimal("0");
 
         Account account = new Account(newAccNo, newOwner, newBalance);
@@ -199,7 +199,7 @@ public class Bank {
         System.out.printf("\n%s님 일반계좌가 발급되었습니다.\n", newOwner);
         account.getAccountInfo(account); //출력
 
-        this.setSeq(this.getSeq() + 1);
+        Bank.setSeq(Bank.getSeq() + 1);
 
         return account;
     }
