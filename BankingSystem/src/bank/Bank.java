@@ -64,6 +64,10 @@ public class Bank {
                     boolean savingWithdrawActive = true;
                     while (withrawActive) {
 
+                        if(virtualWithdrawAccount.getBalance().compareTo(BigDecimal.ZERO) == 0){
+                            throw new BalanceException("계좌의 잔액이 0원입니다.");
+                        }
+
                         if (virtualWithdrawAccount instanceof Account) {
 
                             if(virtualWithdrawAccount instanceof SavingAccount){
