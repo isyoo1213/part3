@@ -14,11 +14,11 @@ public class CentralBank {
 
     //TODO: accountList(Account로 이루어진 ArrayList)
 
-    private static ArrayList<Account> accountList = new ArrayList<Account>();
+    private static ArrayList<Account> accountList = new ArrayList<>();
 
     //TODO: BANK_NAME(은행명)
 
-    private static String BANK_NAME = "인성은행";
+    private static final String BANK_NAME = "인성은행";
 
     //TODO: getInstance 함수
 

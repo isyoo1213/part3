@@ -13,10 +13,15 @@ public class SavingInterestCalculator implements InterestCalculator{
 
         BigDecimal interest;
 
-        if(balance.compareTo(tier3) >= 0){
-            interest = balance.multiply(tier1Ratio);
+        SavingAccountBalanceTierList.add(BigDecimal.valueOf(1000000));
+
+        SavingAccountInterestRatioTierList.add(BigDecimal.valueOf(0.5));
+        SavingAccountInterestRatioTierList.add(BigDecimal.valueOf(0.01));
+
+        if(balance.compareTo(SavingAccountBalanceTierList.get(0)) >= 0){
+            interest = balance.multiply(SavingAccountInterestRatioTierList.get(0));
         } else {
-            interest = balance.multiply(tier5Ratio);
+            interest = balance.multiply(SavingAccountInterestRatioTierList.get(1));
         }
         return interest;
 
