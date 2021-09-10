@@ -102,8 +102,8 @@ public class Bank {
                                 } else {
                                     interest = interestCalculatorHashMap.get("N").getInsterest(withdrawAmount);
                                 }
-                                System.out.println("출금이 완료됐습니다." + "\n" + virtualWithdrawAccount.getAccNo() + "계좌의 잔액은 " + virtualWithdrawAccount.getBalance() + "원 입니다.");
-                                System.out.println("출금액에 대한 이자는 " + interest + "원 입니다.");
+                                System.out.println("출금이 완료됐습니다." + "\n" + virtualWithdrawAccount.getAccNo() + "계좌의 잔액은 " + df.format(virtualWithdrawAccount.getBalance()) + "원 입니다.");
+                                System.out.println("출금액에 대한 이자는 " + df.format(interest) + "원 입니다.");
                             }
                         }
                         break;
@@ -148,7 +148,7 @@ public class Bank {
                     } else {
                         this.findAccount(accNo).deposit(depositAmount);
                         virtualDeopsitAccount.setBalance(this.findAccount(accNo).getBalance());
-                        System.out.println("입금이 완료됐습니다." + "\n" + virtualDeopsitAccount.getAccNo() + "계좌의 잔액은 " + virtualDeopsitAccount.getBalance() + "원 입니다.");
+                        System.out.println("입금이 완료됐습니다." + "\n" + virtualDeopsitAccount.getAccNo() + "계좌의 잔액은 " + df.format(virtualDeopsitAccount.getBalance()) + "원 입니다.");
                     }
                     break;
                 }
@@ -284,7 +284,7 @@ public class Bank {
                             virtualTransferAccount1.setBalance(this.findAccount(fromAccNo).getBalance());
                             virtualTransferAccount2.setBalance(this.findAccount(toAccNo).getBalance());
                             System.out.println(virtualTransferAccount1.getAccNo() + "계좌에서 " + virtualTransferAccount2.getAccNo() + "계좌로 송금이 완료됐습니다.");
-                            System.out.println(virtualTransferAccount1.getAccNo() + "계좌의 잔액은 " + virtualTransferAccount1.getBalance() + "원 입니다.");
+                            System.out.println(virtualTransferAccount1.getAccNo() + "계좌의 잔액은 " + df.format(virtualTransferAccount1.getBalance()) + "원 입니다.");
                         }
                     }
                     break;
