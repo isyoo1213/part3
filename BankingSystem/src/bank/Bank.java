@@ -243,6 +243,11 @@ public class Bank {
                 if (virtualTransferAccount1 == null ) {
                     throw new AccountException("올바른 계좌번호를 입력해주세요.");
                 } else {
+
+                    if(virtualTransferAccount1.getBalance().compareTo(BigDecimal.ZERO) == 0){
+                        throw new BalanceException("계좌의 잔액이 0원입니다.");
+                    }
+
                     //적금 계좌일 경우 적금 목표액 이상의 잔액을 확보하고 있는지 확인
                     if(virtualTransferAccount1 instanceof SavingAccount){
                         transferActive = ((SavingBank)this).withdraw((SavingAccount)virtualTransferAccount1);
